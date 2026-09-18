@@ -103,6 +103,8 @@ The jar lands in `build/libs/`. Dev client: `./gradlew runClient` (set `adastra_
 
 Project vocabulary lives in [CONTEXT.md](CONTEXT.md). Licensed under MIT.
 
+Heavily inspired by [Viltrumite](https://www.curseforge.com/minecraft/mc-mods/viltrumite). THX baranhan123.
+
 ---
 
 ## Русский
@@ -151,3 +153,5 @@ Project vocabulary lives in [CONTEXT.md](CONTEXT.md). Licensed under MIT.
 - Тег `rsm:physical` — что считать физическим уроном, правится датапаком.
 
 Сборка: `./gradlew build`. Лицензия MIT.
+
+Heavily inspired by [Viltrumite](https://www.curseforge.com/minecraft/mc-mods/viltrumite). THX baranhan123.

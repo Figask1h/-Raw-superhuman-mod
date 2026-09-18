@@ -37,6 +37,8 @@ With **Ad Astra** installed, fly above the atmosphere and the planet selection s
 
 **Requires:** NeoForge 1.21.1, Curios API. **Optional:** Ad Astra.
 
+Heavily inspired by [Viltrumite](https://www.curseforge.com/minecraft/mc-mods/viltrumite). THX baranhan123.
+
 ---
 
 ## Русский
@@ -71,3 +73,5 @@ With **Ad Astra** installed, fly above the atmosphere and the planet selection s
 - Крафт: 6 незеритовых блоков, 2 маяка и алмазный блок — эндгеймовая цена за конец баланса. Есть и своя креатив-вкладка.
 
 **Требует:** NeoForge 1.21.1, Curios API. **По желанию:** Ad Astra.
+
+Heavily inspired by [Viltrumite](https://www.curseforge.com/minecraft/mc-mods/viltrumite). THX baranhan123.
