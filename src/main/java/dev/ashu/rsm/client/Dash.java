@@ -2,6 +2,7 @@ package dev.ashu.rsm.client;
 
 import dev.ashu.rsm.RsmConfig;
 import dev.ashu.rsm.power.Bearer;
+import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
@@ -9,7 +10,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * Dash: a burst of movement along the camera. On foot or in hover it is a velocity impulse that
+ * Dash: a burst of movement in the direction the player is moving (WASD, plus jump/sneak while
+ * hovering; standing still dashes forward). On foot or in hover it is a velocity impulse that
  * vanilla friction turns into roughly dashDistance blocks; in fast flight it becomes a speed boost.
  * Movement is client-authoritative, so the whole thing lives on the client; only the cooldown is tracked.
  */
@@ -50,14 +52,7 @@ public final class Dash {
         if (controller.isFast()) {
             controller.dashInFlight(player);
         } else {
-            Vec3 look = player.getLookAngle();
-            if (player.onGround() && look.y < 0.0) {
-                // Do not dash into the floor: flatten the direction when standing.
-                look = new Vec3(look.x, 0.0, look.z);
-                if (look.lengthSqr() < 1.0E-6) look = Vec3.directionFromRotation(0.0F, player.getYRot());
-                look = look.normalize();
-            }
-            Vec3 impulse = look.scale(RsmConfig.DASH_DISTANCE.get() * IMPULSE_PER_BLOCK);
+            Vec3 impulse = movementDirection(player).scale(RsmConfig.DASH_DISTANCE.get() * IMPULSE_PER_BLOCK);
             double lift = player.onGround() ? GROUND_LIFT : 0.0;
             player.setDeltaMovement(impulse.x, Mth.clamp(impulse.y + lift, -3.0, 3.0), impulse.z);
         }
@@ -68,6 +63,28 @@ public final class Dash {
                 player.getRandomX(0.6), player.getY() + player.getRandom().nextDouble() * 0.6, player.getRandomZ(0.6),
                 (player.getRandom().nextDouble() - 0.5) * 0.2, 0.02, (player.getRandom().nextDouble() - 0.5) * 0.2);
         }
+    }
+
+    /** Movement keys relative to the camera yaw; vertical keys count only while flying. Falls back to velocity, then to facing. */
+    private static Vec3 movementDirection(LocalPlayer player) {
+        Input input = player.input;
+        double forward = input.forwardImpulse;
+        double left = input.leftImpulse;
+        double up = 0.0;
+        if (player.getAbilities().flying) {
+            if (input.jumping) up += 1.0;
+            if (input.shiftKeyDown) up -= 1.0;
+        }
+        if (forward * forward + left * left + up * up > 1.0E-4) {
+            float yaw = player.getYRot() * Mth.DEG_TO_RAD;
+            float sin = Mth.sin(yaw);
+            float cos = Mth.cos(yaw);
+            return new Vec3(left * cos - forward * sin, up, forward * cos + left * sin).normalize();
+        }
+        Vec3 velocity = player.getDeltaMovement();
+        Vec3 horizontal = new Vec3(velocity.x, 0.0, velocity.z);
+        if (horizontal.lengthSqr() > 1.0E-3) return horizontal.normalize();
+        return Vec3.directionFromRotation(0.0F, player.getYRot());
     }
 
     private Dash() {}

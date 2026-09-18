@@ -6,5 +6,6 @@
   "key.rsm.strike": "Прямой",
   "key.rsm.dash": "Дэш",
   "rsm.hud.speed": "%s б/с",
-  "rsm.hud.cruise": "КРУИЗ"
+  "rsm.hud.cruise": "КРУИЗ",
+  "itemGroup.rsm": "Raw superhuman mod"
 }

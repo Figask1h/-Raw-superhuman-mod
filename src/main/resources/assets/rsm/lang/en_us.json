@@ -6,5 +6,6 @@
   "key.rsm.strike": "Strike",
   "key.rsm.dash": "Dash",
   "rsm.hud.speed": "%s b/s",
-  "rsm.hud.cruise": "CRUISE"
+  "rsm.hud.cruise": "CRUISE",
+  "itemGroup.rsm": "Raw superhuman mod"
 }

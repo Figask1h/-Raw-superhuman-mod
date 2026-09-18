@@ -32,7 +32,7 @@ With **Ad Astra** installed, fly above the atmosphere and the planet selection s
 - Every number — speeds, thresholds, damage, cooldowns, dash — lives in `serverconfig/rsm-server.toml` and syncs to clients. FOV boost and HUD are client options.
 - What counts as "physical" damage is a datapack tag (`rsm:physical`).
 - Works on dedicated servers; movement is validated the same way vanilla elytra flight is.
-- The ring is creative-only / `/give`. This is a sandbox toy, not progression content.
+- Crafted from 6 netherite blocks, 2 beacons and a diamond block: an end-game price for an end-of-balance item. Also in its own creative tab.
 
 **Requires:** NeoForge 1.21.1, Curios API. **Optional:** Ad Astra.
 
@@ -66,6 +66,6 @@ With **Ad Astra** installed, fly above the atmosphere and the planet selection s
 - Все цифры — скорости, пороги, урон, перезарядки, дэш — в `serverconfig/rsm-server.toml`, синхронизируются клиентам. FOV и HUD — клиентские настройки.
 - Что считать физическим уроном — тег датапака `rsm:physical`.
 - Работает на выделенных серверах.
-- Кольцо только из креатива / `/give`. Это игрушка для песочницы, не прогрессия.
+- Крафт: 6 незеритовых блоков, 2 маяка и алмазный блок — эндгеймовая цена за конец баланса. Есть и своя креатив-вкладка.
 
 **Требует:** NeoForge 1.21.1, Curios API. **По желанию:** Ad Astra.

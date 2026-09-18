@@ -8,7 +8,6 @@ import dev.ashu.rsm.power.FlightMode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.Pose;
@@ -201,16 +200,14 @@ public final class FlightController {
             double distance = RsmConfig.REBOUND_DISTANCE.get();
             Vec3 back = direction.scale(-1.0);
             player.setDeltaMovement(back.x * distance * 0.09, back.y * distance * 0.4, back.z * distance * 0.09);
-            player.playSound(SoundEvents.ANVIL_LAND, 0.6F, 1.4F);
         } else {
             player.setDeltaMovement(Vec3.ZERO);
         }
         toHover(player);
     }
 
-    /** Dash while in fast flight: snap to the camera and add a burst of speed (cruise remembers it). */
+    /** Dash while in fast flight: a burst of speed along the current travel direction (cruise remembers it). */
     public void dashInFlight(LocalPlayer player) {
-        direction = player.getLookAngle();
         speed = Math.min(RsmConfig.MAX_SPEED.get(), speed + RsmConfig.DASH_FLIGHT_BOOST.get());
         if (mode == FlightMode.CRUISE) cruiseSpeed = speed;
         if (mode == FlightMode.DECEL) mode = FlightMode.BOOST;
