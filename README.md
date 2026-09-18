@@ -48,8 +48,8 @@ With **Ad Astra** installed, flying above the atmosphere-leave height (600 by de
 screen exactly like a rocket would — every planet available, no rocket, no fuel. You arrive at the top of the target
 planet's sky and fly down.
 
-### Haste
-Permanent Haste III while the ring is worn.
+### Haste & Night Vision
+Permanent Haste III and Night Vision while the ring is worn.
 
 ### HUD
 Speedometer left of the hotbar with a CRUISE marker; Slash, Strike and Dash icons right of the hotbar, shaded while on cooldown.
@@ -125,7 +125,7 @@ Heavily inspired by [Viltrumite](https://www.curseforge.com/minecraft/mc-mods/vi
 - **Слэш** — 175 урона всем в дуге 120° на дистанции меча, перезарядка 0,5 с.
 - **Прямой** — 500 урона цели под прицелом до 4 блоков с сильным отбросом, перезарядка 5 с (уходит и при промахе).
 - **Космос** — с Ad Astra выше 600 открывается экран планет, все планеты доступны.
-- **Спешка III** — постоянно, пока кольцо надето.
+- **Спешка III и Ночное зрение** — постоянно, пока кольцо надето.
 
 ### Управление
 

@@ -30,19 +30,26 @@ public class DnaRingItem extends Item implements ICurioItem {
     private static final int HASTE_AMPLIFIER = 2;
     private static final int HASTE_DURATION_TICKS = 60;
     private static final int HASTE_REFRESH_TICKS = 20;
+    /** Vanilla starts flashing night vision below 200 ticks left, so keep it comfortably above that. */
+    private static final int NIGHT_VISION_DURATION_TICKS = 400;
+    private static final int NIGHT_VISION_REFRESH_TICKS = 240;
 
     public DnaRingItem(Properties properties) {
         super(properties);
     }
 
-    /** Haste III while worn: refreshed every second so it never flickers and never lingers after removal. */
+    /** Haste III and Night Vision while worn: refreshed shortly before they run out, so they never flicker and never linger after removal. */
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         LivingEntity wearer = slotContext.entity();
         if (wearer.level().isClientSide) return;
-        MobEffectInstance current = wearer.getEffect(MobEffects.DIG_SPEED);
-        if (current == null || current.getAmplifier() < HASTE_AMPLIFIER || current.getDuration() <= HASTE_REFRESH_TICKS) {
+        MobEffectInstance haste = wearer.getEffect(MobEffects.DIG_SPEED);
+        if (haste == null || haste.getAmplifier() < HASTE_AMPLIFIER || haste.getDuration() <= HASTE_REFRESH_TICKS) {
             wearer.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, HASTE_DURATION_TICKS, HASTE_AMPLIFIER, true, false, true));
+        }
+        MobEffectInstance nightVision = wearer.getEffect(MobEffects.NIGHT_VISION);
+        if (nightVision == null || nightVision.getDuration() <= NIGHT_VISION_REFRESH_TICKS) {
+            wearer.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, NIGHT_VISION_DURATION_TICKS, 0, true, false, true));
         }
     }
 
