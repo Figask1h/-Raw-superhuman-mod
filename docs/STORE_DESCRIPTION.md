@@ -22,6 +22,7 @@
 - `/kill` and the void still work, so you cannot get stuck.
 
 ### Attacks
+- Permanent **Haste III** while the ring is on.
 - **Slash** (mouse 4): 175 damage to everything in a sword-reach arc in front of you, 0.5 s cooldown.
 - **Strike** (mouse 5): 500 damage to the target under your crosshair with a brutal knockback, 5 s cooldown.
 
@@ -56,6 +57,7 @@ With **Ad Astra** installed, fly above the atmosphere and the planet selection s
 - `/kill` и бездна работают — застрять невозможно.
 
 ### Атаки
+- Постоянная **Спешка III**, пока кольцо надето.
 - **Слэш** (кнопка мыши 4): 175 урона всем в дуге перед собой на дистанции меча, перезарядка 0,5 с.
 - **Прямой** (кнопка мыши 5): 500 урона цели под прицелом с жёстким отбросом, перезарядка 5 с.
 

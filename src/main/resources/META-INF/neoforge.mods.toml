@@ -9,7 +9,7 @@ version="${mod_version}"
 displayName="${mod_name}"
 authors="${mod_authors}"
 displayURL="https://github.com/Figask1h/-Raw-superhuman-mod"
-description='''Мод добавляющий дизбалансное кольцо.'''
+description='''A mod that adds one unbalanced ring.'''
 
 [[mixins]]
 config="${mod_id}.mixins.json"

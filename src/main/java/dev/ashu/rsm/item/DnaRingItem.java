@@ -7,6 +7,9 @@ import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -24,9 +27,23 @@ import java.util.List;
  * The item itself carries no state; every ability checks {@link dev.ashu.rsm.power.Bearer}.
  */
 public class DnaRingItem extends Item implements ICurioItem {
+    private static final int HASTE_AMPLIFIER = 2;
+    private static final int HASTE_DURATION_TICKS = 60;
+    private static final int HASTE_REFRESH_TICKS = 20;
 
     public DnaRingItem(Properties properties) {
         super(properties);
+    }
+
+    /** Haste III while worn: refreshed every second so it never flickers and never lingers after removal. */
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        LivingEntity wearer = slotContext.entity();
+        if (wearer.level().isClientSide) return;
+        MobEffectInstance current = wearer.getEffect(MobEffects.DIG_SPEED);
+        if (current == null || current.getAmplifier() < HASTE_AMPLIFIER || current.getDuration() <= HASTE_REFRESH_TICKS) {
+            wearer.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, HASTE_DURATION_TICKS, HASTE_AMPLIFIER, true, false, true));
+        }
     }
 
     @Override
