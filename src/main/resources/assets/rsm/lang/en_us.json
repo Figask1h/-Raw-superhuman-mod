@@ -1,0 +1,10 @@
+{
+  "item.rsm.ring": "DNA Alteration Ring",
+  "item.rsm.ring.tooltip": "Grants unbalanced power.",
+  "key.categories.rsm": "Raw superhuman mod",
+  "key.rsm.slash": "Slash",
+  "key.rsm.strike": "Strike",
+  "key.rsm.dash": "Dash",
+  "rsm.hud.speed": "%s b/s",
+  "rsm.hud.cruise": "CRUISE"
+}

@@ -1,0 +1,114 @@
+plugins {
+    id 'java-library'
+    id 'idea'
+    id 'net.neoforged.moddev' version '2.0.91'
+}
+
+version = mod_version
+group = mod_group_id
+
+base {
+    archivesName = mod_id
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+}
+
+repositories {
+    mavenLocal()
+    maven {
+        name = 'Curios'
+        url = 'https://maven.theillusivec4.top/'
+    }
+    maven {
+        name = 'Team Resourceful'
+        url = 'https://maven.teamresourceful.com/repository/maven-public/'
+    }
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'Modrinth'
+                url = 'https://api.modrinth.com/maven'
+            }
+        }
+        filter {
+            includeGroup 'maven.modrinth'
+        }
+    }
+}
+
+neoForge {
+    version = project.neo_version
+
+    parchment {
+        mappingsVersion = project.parchment_mappings_version
+        minecraftVersion = project.parchment_minecraft_version
+    }
+
+    runs {
+        client {
+            client()
+        }
+        server {
+            server()
+            programArgument '--nogui'
+        }
+        configureEach {
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            logLevel = org.slf4j.event.Level.DEBUG
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
+        }
+    }
+}
+
+dependencies {
+    // Curios: hard dependency, the ring lives in its "ring" slot.
+    implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
+
+    // Ad Astra: optional at runtime, needed at compile time for the space integration.
+    compileOnly "maven.modrinth:ad-astra:${adastra_modrinth_version}"
+    compileOnly "com.teamresourceful.resourcefullib:resourcefullib-neoforge-1.21:${resourcefullib_version}"
+    compileOnly "com.teamresourceful.resourcefulconfig:resourcefulconfig-neoforge-1.21:${resourcefulconfig_version}"
+    if (adastra_in_dev.toBoolean()) {
+        runtimeOnly "maven.modrinth:ad-astra:${adastra_modrinth_version}"
+        runtimeOnly "com.teamresourceful.resourcefullib:resourcefullib-neoforge-1.21:${resourcefullib_version}"
+        runtimeOnly "com.teamresourceful.resourcefulconfig:resourcefulconfig-neoforge-1.21:${resourcefulconfig_version}"
+        runtimeOnly "earth.terrarium.common_storage_lib:common-storage-lib-neoforge-1.21.1:${csl_version}"
+    }
+}
+
+tasks.withType(ProcessResources).configureEach {
+    var replaceProperties = [
+            minecraft_version: minecraft_version,
+            neo_version      : neo_version,
+            curios_version   : curios_version,
+            adastra_version  : adastra_version,
+            mod_id           : mod_id,
+            mod_name         : mod_name,
+            mod_version      : mod_version,
+            mod_authors      : mod_authors,
+            mod_license      : mod_license,
+    ]
+    inputs.properties replaceProperties
+    filesMatching('META-INF/neoforge.mods.toml') {
+        expand replaceProperties
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << '-Xlint:deprecation'
+}
+
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
+}

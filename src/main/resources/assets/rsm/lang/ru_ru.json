@@ -1,0 +1,10 @@
+{
+  "item.rsm.ring": "Кольцо изменения ДНК",
+  "item.rsm.ring.tooltip": "Дает дизбалансную силу.",
+  "key.categories.rsm": "Raw superhuman mod",
+  "key.rsm.slash": "Слэш",
+  "key.rsm.strike": "Прямой",
+  "key.rsm.dash": "Дэш",
+  "rsm.hud.speed": "%s б/с",
+  "rsm.hud.cruise": "КРУИЗ"
+}

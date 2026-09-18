@@ -1,0 +1,30 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:mob_attack",
+    "minecraft:mob_attack_no_aggro",
+    "minecraft:player_attack",
+    "minecraft:arrow",
+    "minecraft:trident",
+    "minecraft:mob_projectile",
+    "minecraft:thrown",
+    "minecraft:spit",
+    "minecraft:fireball",
+    "minecraft:unattributed_fireball",
+    "minecraft:wither_skull",
+    "minecraft:wind_charge",
+    "minecraft:explosion",
+    "minecraft:player_explosion",
+    "minecraft:bad_respawn_point",
+    "minecraft:thorns",
+    "minecraft:sting",
+    "minecraft:sonic_boom",
+    "minecraft:falling_block",
+    "minecraft:falling_anvil",
+    "minecraft:falling_stalactite",
+    "minecraft:stalagmite",
+    "minecraft:cactus",
+    "minecraft:sweet_berry_bush",
+    { "id": "ad_astra:ran_over", "required": false }
+  ]
+}

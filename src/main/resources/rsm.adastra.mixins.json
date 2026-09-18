@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.ashu.rsm.mixin.adastra",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "ModUtilsMixin"
+  ],
+  "client": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
