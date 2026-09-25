@@ -49,10 +49,10 @@ screen exactly like a rocket would — every planet available, no rocket, no fue
 planet's sky and fly down.
 
 ### Haste & Night Vision
-Permanent Haste III and Night Vision while the ring is worn.
+Haste III and Night Vision while the ring is worn, each switchable on its own (H and N by default). Your choice is remembered; switching off only removes the ring's effect, never a potion or beacon.
 
 ### HUD
-Speedometer left of the hotbar with a CRUISE marker; Slash, Strike and Dash icons right of the hotbar, shaded while on cooldown.
+Speedometer left of the hotbar with a CRUISE marker; Slash, Strike and Dash icons right of the hotbar, shaded while on cooldown, then Haste and Night Vision icons, faded while switched off.
 
 ## Controls
 
@@ -64,8 +64,10 @@ Speedometer left of the hotbar with a CRUISE marker; Slash, Strike and Dash icon
 | Slash | mouse button 4 |
 | Strike | mouse button 5 |
 | Dash | Caps Lock |
+| Haste on/off | H |
+| Night Vision on/off | N |
 
-Slash, Strike and Dash are rebindable under *Controls → Raw superhuman mod*.
+All of these except flight, Boost and Cruise are rebindable under *Controls → Raw superhuman mod*.
 
 ## Getting the ring
 
@@ -125,7 +127,7 @@ Heavily inspired by [Viltrumite](https://www.curseforge.com/minecraft/mc-mods/vi
 - **Слэш** — 175 урона всем в дуге 120° на дистанции меча (сквозь стены не бьёт), перезарядка 0,5 с.
 - **Прямой** — 500 урона цели под прицелом до 4 блоков с сильным отбросом, перезарядка 5 с (уходит и при промахе).
 - **Космос** — с Ad Astra выше 600 открывается экран планет, все планеты доступны.
-- **Спешка III и Ночное зрение** — постоянно, пока кольцо надето.
+- **Спешка III и Ночное зрение** — пока кольцо надето; каждый эффект включается и выключается отдельно (H и N), выбор запоминается. Иконки справа от хотбара, выключенный эффект — бледный.
 
 ### Управление
 
@@ -137,8 +139,10 @@ Heavily inspired by [Viltrumite](https://www.curseforge.com/minecraft/mc-mods/vi
 | Слэш | кнопка мыши 4 |
 | Прямой | кнопка мыши 5 |
 | Дэш | Caps Lock |
+| Спешка вкл/выкл | H |
+| Ночное зрение вкл/выкл | N |
 
-Слэш, Прямой и Дэш перебиндиваются в «Управление → Raw superhuman mod».
+Всё, кроме полёта, Ускорения и Круиза, перебиндивается в «Управление → Raw superhuman mod».
 
 ### Крафт и зависимости
 

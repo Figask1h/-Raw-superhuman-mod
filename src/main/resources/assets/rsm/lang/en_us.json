@@ -5,6 +5,8 @@
   "key.rsm.slash": "Slash",
   "key.rsm.strike": "Strike",
   "key.rsm.dash": "Dash",
+  "key.rsm.toggle_haste": "Toggle Haste",
+  "key.rsm.toggle_night_vision": "Toggle Night Vision",
   "rsm.hud.speed": "%s b/s",
   "rsm.hud.cruise": "CRUISE",
   "itemGroup.rsm": "Raw superhuman mod"

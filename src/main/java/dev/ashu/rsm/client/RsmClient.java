@@ -21,7 +21,7 @@ public final class RsmClient {
         @SubscribeEvent
         static void registerGuiLayers(RegisterGuiLayersEvent event) {
             event.registerAbove(VanillaGuiLayers.CROSSHAIR, RawSuperhumanMod.id("flight"), FlightHud::render);
-            event.registerAbove(VanillaGuiLayers.HOTBAR, RawSuperhumanMod.id("attacks"), AttackHud::render);
+            event.registerAbove(VanillaGuiLayers.HOTBAR, RawSuperhumanMod.id("abilities"), AbilityHud::render);
         }
     }
 
@@ -62,6 +62,7 @@ public final class RsmClient {
             FlightController.get().reset();
             ModKeys.COOLDOWNS.reset();
             Dash.reset();
+            ClientPassives.reset();
         }
 
         @SubscribeEvent
