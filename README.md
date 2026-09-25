@@ -29,8 +29,8 @@ A burst of movement in the direction you are moving (WASD relative to the camera
 hovering; standing still dashes forward). About 8 blocks on foot or in hover; in fast flight it is an instant
 +40 blocks/s along your current course. 1.5 s cooldown.
 
-### Rebound
-Hit a wall at 50 blocks/s or more and you bounce back about 4 blocks and drop to hover. Slower than that you just stop.
+### Slide
+Brush a wall or the ground at a shallow angle (up to 30°) and you slide along it. Fly into it head-on and you stop and drop to hover.
 
 ### Defense
 - **Physical** damage — melee, arrows, tridents, projectiles, explosions, thorns, stings, sonic boom, falling blocks, cactus — is absorbed by **93 %** (after armor).
@@ -123,7 +123,7 @@ Heavily inspired by [Viltrumite](https://www.curseforge.com/minecraft/mc-mods/vi
 - **Полёт** — как в креативе (двойной прыжок), а бег + вперёд включает Ускорение по направлению взгляда: до 150 б/с за 7 секунд, поза элитры, растущий FOV. В ускорении рулишь только камерой; плавные повороты бесплатны, резче 70° — теряешь часть скорости.
 - **Круиз** — присел во время разгона: скорость зафиксирована, отпускай все клавиши и рули мышью; потерянная на повороте скорость добирается сама. Присел ещё раз — тормозишь.
 - **Дэш** — рывок по направлению движения (WASD, в зависании ещё вверх/вниз, стоя — вперёд): ~8 блоков на земле, в быстром полёте — +40 б/с по курсу. Перезарядка 1,5 с.
-- **Отскок** — влетел в стену на 50+ б/с: отбрасывает на 4 блока назад.
+- **Скольжение** — задел стену или землю под острым углом (до 30°) — скользишь вдоль; влетел в лоб — остановка и Зависание.
 - **Защита** — физический урон поглощается на 93 %, всё остальное (огонь, лава, падение, удушение, холод, яд, магия, голод, кислород Ad Astra) не проходит вообще. `/kill` и бездна работают.
 - **Слэш** — 175 урона всем в дуге 120° на дистанции меча (сквозь стены не бьёт), перезарядка 0,5 с.
 - **Прямой** — 500 урона цели под прицелом до 4 блоков с сильным отбросом, перезарядка 5 с (уходит и при промахе).

@@ -19,9 +19,8 @@ public final class RsmConfig {
     public static final ModConfigSpec.DoubleValue TURN_LOSS_MIN_ANGLE;
     public static final ModConfigSpec.DoubleValue TURN_SPEED_LOSS;
 
-    // --- Rebound ---
-    public static final ModConfigSpec.DoubleValue REBOUND_THRESHOLD;
-    public static final ModConfigSpec.DoubleValue REBOUND_DISTANCE;
+    // --- Collisions ---
+    public static final ModConfigSpec.DoubleValue SLIDE_MAX_ANGLE;
 
     // --- Dash ---
     public static final ModConfigSpec.DoubleValue DASH_DISTANCE;
@@ -69,11 +68,9 @@ public final class RsmConfig {
             .defineInRange("turnSpeedLossPerDegree", 0.003, 0.0, 0.1);
         b.pop();
 
-        b.push("rebound");
-        REBOUND_THRESHOLD = b.comment("Speed (blocks/second) from which hitting a block throws the bearer back instead of just stopping.")
-            .defineInRange("threshold", 50.0, 0.0, 1000.0);
-        REBOUND_DISTANCE = b.comment("How far back (blocks) the bearer is thrown on rebound.")
-            .defineInRange("distance", 4.0, 0.0, 64.0);
+        b.push("collisions");
+        SLIDE_MAX_ANGLE = b.comment("Hitting a block at an angle (degrees between flight direction and surface) up to this slides along it instead of stopping.")
+            .defineInRange("slideMaxAngle", 30.0, 0.0, 90.0);
         b.pop();
 
         b.push("dash");

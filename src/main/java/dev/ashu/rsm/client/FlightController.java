@@ -184,26 +184,36 @@ public final class FlightController {
     public boolean travel(LocalPlayer player) {
         if (!isFast()) return false;
         Vec3 velocity = direction.scale(speed / 20.0);
+        Vec3 start = player.position();
         player.setDeltaMovement(velocity);
         player.move(MoverType.SELF, velocity);
         player.resetFallDistance();
         if (player.horizontalCollision || player.verticalCollision) {
-            onBlocked(player);
+            onCollision(player, velocity, player.position().subtract(start));
         }
         return true;
     }
 
-    /** Hit a block we could not pass: rebound when fast enough, otherwise just drop to hover. */
-    private void onBlocked(LocalPlayer player) {
-        if (speed >= RsmConfig.REBOUND_THRESHOLD.get()) {
-            // Hand vanilla a velocity that decays (0.91/tick horizontal, 0.6/tick vertical) over about reboundDistance blocks.
-            double distance = RsmConfig.REBOUND_DISTANCE.get();
-            Vec3 back = direction.scale(-1.0);
-            player.setDeltaMovement(back.x * distance * 0.09, back.y * distance * 0.4, back.z * distance * 0.09);
-        } else {
-            player.setDeltaMovement(Vec3.ZERO);
-        }
+    /**
+     * A block was in the way. A shallow contact is a Slide: vanilla collision already carried us along the
+     * surface, so nothing to do. A head-on hit stops us and drops to hover.
+     */
+    private void onCollision(LocalPlayer player, Vec3 velocity, Vec3 moved) {
+        if (incidence(velocity, moved) <= Math.sin(Math.toRadians(RsmConfig.SLIDE_MAX_ANGLE.get()))) return;
+        player.setDeltaMovement(Vec3.ZERO);
         toHover(player);
+    }
+
+    /**
+     * Sine of the angle between the travel direction and the surface that was hit: the direction's component
+     * along the normal of each axis the collision blocked (0 = grazing, 1 = straight into it).
+     */
+    private double incidence(Vec3 velocity, Vec3 moved) {
+        double incidence = 0.0;
+        if (Math.abs(velocity.x - moved.x) > 1.0E-4) incidence = Math.max(incidence, Math.abs(direction.x));
+        if (Math.abs(velocity.y - moved.y) > 1.0E-4) incidence = Math.max(incidence, Math.abs(direction.y));
+        if (Math.abs(velocity.z - moved.z) > 1.0E-4) incidence = Math.max(incidence, Math.abs(direction.z));
+        return incidence;
     }
 
     /** Dash while in fast flight: a burst of speed along the current travel direction (cruise remembers it). */

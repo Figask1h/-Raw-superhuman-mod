@@ -14,7 +14,7 @@
 - Creative-style flight (double-jump), plus a **Boost**: hold sprint + forward and you accelerate along your camera up to **150 blocks/s** in seven seconds. Elytra pose, wind, growing field of view — the works.
 - **Cruise control**: sneak while boosting to lock your speed, then let go of everything and just steer with the mouse. Sneak again to brake.
 - **Dash** (Caps Lock): an 8-block burst on foot, an instant speed kick in the air.
-- Hit a wall at 50+ b/s and you bounce off it instead of splatting.
+- Brush a wall or the ground at a shallow angle and you slide along it instead of stopping.
 
 ### Defense
 - Physical damage — melee, arrows, explosions, falling anvils — is absorbed by **93 %**.
@@ -51,7 +51,7 @@ Heavily inspired by [Viltrumite](https://www.curseforge.com/minecraft/mc-mods/vi
 - Полёт как в креативе (двойной прыжок) плюс **Ускорение**: зажми бег + вперёд и разгоняйся по направлению взгляда до **150 блоков/с** за семь секунд. Поза элитры, свист ветра, растущий FOV.
 - **Круиз**: присядь во время разгона — скорость зафиксирована, отпускай всё и рули мышью. Присел ещё раз — тормозишь.
 - **Дэш** (Caps Lock): рывок на 8 блоков на земле, мгновенная прибавка скорости в воздухе.
-- Влетел в стену на 50+ б/с — отскакиваешь, а не размазываешься.
+- Задел стену или землю по касательной — скользишь вдоль, а не останавливаешься.
 
 ### Защита
 - Физический урон — удары, стрелы, взрывы, наковальни — поглощается на **93 %**.
