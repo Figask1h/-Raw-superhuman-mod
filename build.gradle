@@ -15,6 +15,18 @@ java {
     toolchain.languageVersion = JavaLanguageVersion.of(21)
 }
 
+// GameTests: run by runGameTestServer, never packed into the jar.
+sourceSets {
+    gametest {
+        compileClasspath += main.output
+        runtimeClasspath += main.output
+    }
+}
+configurations {
+    gametestImplementation.extendsFrom implementation
+    gametestRuntimeOnly.extendsFrom runtimeOnly
+}
+
 repositories {
     mavenLocal()
     maven {
@@ -40,6 +52,7 @@ repositories {
 
 neoForge {
     version = project.neo_version
+    addModdingDependenciesTo(sourceSets.gametest)
 
     parchment {
         mappingsVersion = project.parchment_mappings_version
@@ -54,6 +67,12 @@ neoForge {
             server()
             programArgument '--nogui'
         }
+        // Runs the GameTests in src/gametest headless and exits; no EULA needed. Fails the build if a test fails.
+        gameTestServer {
+            type = "gameTestServer"
+            sourceSet = sourceSets.gametest
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
         configureEach {
             systemProperty 'forge.logging.markers', 'REGISTRIES'
             logLevel = org.slf4j.event.Level.DEBUG
@@ -63,6 +82,7 @@ neoForge {
     mods {
         "${mod_id}" {
             sourceSet(sourceSets.main)
+            sourceSet(sourceSets.gametest)
         }
     }
 }
