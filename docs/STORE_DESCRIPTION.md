@@ -23,7 +23,7 @@
 
 ### Attacks
 - Permanent **Haste III** and **Night Vision** while the ring is on.
-- **Slash** (mouse 4): 175 damage to everything in a sword-reach arc in front of you, 0.5 s cooldown.
+- **Slash** (mouse 4): 175 damage to everything in a sword-reach arc in front of you (walls stop it), 0.5 s cooldown.
 - **Strike** (mouse 5): 500 damage to the target under your crosshair with a brutal knockback, 5 s cooldown.
 
 ### Space (Ad Astra)
@@ -60,7 +60,7 @@ Heavily inspired by [Viltrumite](https://www.curseforge.com/minecraft/mc-mods/vi
 
 ### Атаки
 - Постоянные **Спешка III** и **Ночное зрение**, пока кольцо надето.
-- **Слэш** (кнопка мыши 4): 175 урона всем в дуге перед собой на дистанции меча, перезарядка 0,5 с.
+- **Слэш** (кнопка мыши 4): 175 урона всем в дуге перед собой на дистанции меча (сквозь стены не бьёт), перезарядка 0,5 с.
 - **Прямой** (кнопка мыши 5): 500 урона цели под прицелом с жёстким отбросом, перезарядка 5 с.
 
 ### Космос (Ad Astra)

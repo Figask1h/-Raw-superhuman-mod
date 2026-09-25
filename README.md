@@ -38,7 +38,7 @@ Hit a wall at 50 blocks/s or more and you bounce back about 4 blocks and drop to
 - `/kill` and the void always work, so you can never get stuck.
 
 ### Slash
-175 damage to every living thing in a 120° arc in front of you at sword reach (3 blocks). 0.5 s cooldown. Mouse 4 by default.
+175 damage to every living thing in a 120° arc in front of you at sword reach (3 blocks); walls stop it. 0.5 s cooldown. Mouse 4 by default.
 
 ### Strike
 500 damage to the single target under your crosshair within 4 blocks, with a heavy knockback. 5 s cooldown, spent even on a miss. Mouse 5 by default.
@@ -122,7 +122,7 @@ Heavily inspired by [Viltrumite](https://www.curseforge.com/minecraft/mc-mods/vi
 - **Дэш** — рывок по направлению движения (WASD, в зависании ещё вверх/вниз, стоя — вперёд): ~8 блоков на земле, в быстром полёте — +40 б/с по курсу. Перезарядка 1,5 с.
 - **Отскок** — влетел в стену на 50+ б/с: отбрасывает на 4 блока назад.
 - **Защита** — физический урон поглощается на 93 %, всё остальное (огонь, лава, падение, удушение, холод, яд, магия, голод, кислород Ad Astra) не проходит вообще. `/kill` и бездна работают.
-- **Слэш** — 175 урона всем в дуге 120° на дистанции меча, перезарядка 0,5 с.
+- **Слэш** — 175 урона всем в дуге 120° на дистанции меча (сквозь стены не бьёт), перезарядка 0,5 с.
 - **Прямой** — 500 урона цели под прицелом до 4 блоков с сильным отбросом, перезарядка 5 с (уходит и при промахе).
 - **Космос** — с Ad Astra выше 600 открывается экран планет, все планеты доступны.
 - **Спешка III и Ночное зрение** — постоянно, пока кольцо надето.

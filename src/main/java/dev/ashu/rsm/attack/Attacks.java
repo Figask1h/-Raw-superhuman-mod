@@ -55,6 +55,7 @@ public final class Attacks {
             if (closest.distanceToSqr(eye) > range * range) continue;
             Vec3 toTarget = closest.subtract(eye);
             if (toTarget.lengthSqr() > 1.0E-4 && angleBetween(look, toTarget) > halfArc) continue;
+            if (!isVisible(level, player, eye, target, closest)) continue;
             if (target.hurt(source, damage)) hitSomething = true;
         }
 
@@ -99,6 +100,15 @@ public final class Attacks {
         if (entity == player || !entity.isAlive() || entity.isSpectator() || !entity.isAttackable()) return false;
         if (entity instanceof ArmorStand stand && stand.isMarker()) return false;
         return !player.isAlliedTo(entity);
+    }
+
+    /** Walls stop the Slash: some part of the target (nearest point, centre or eyes) must be in plain view. */
+    private static boolean isVisible(ServerLevel level, ServerPlayer player, Vec3 eye, LivingEntity target, Vec3 closest) {
+        for (Vec3 point : new Vec3[] {closest, target.getBoundingBox().getCenter(), target.getEyePosition()}) {
+            ClipContext ray = new ClipContext(eye, point, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player);
+            if (level.clip(ray).getType() == HitResult.Type.MISS) return true;
+        }
+        return false;
     }
 
     private static Vec3 closestPoint(AABB box, Vec3 point) {
