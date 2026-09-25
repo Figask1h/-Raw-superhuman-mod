@@ -32,6 +32,9 @@ hovering; standing still dashes forward). About 8 blocks on foot or in hover; in
 ### Slide
 Brush a wall or the ground at a shallow angle (up to 30°) and you slide along it. Fly into it head-on and you stop and drop to hover.
 
+### Breakthrough
+Fly head-on into blocks at 60 blocks/s or more and you punch a ragged tunnel about three blocks wide straight through them, without slowing down. Nothing drops. **Impervious** blocks stop you dead: obsidian and anything as blast-resistant (anvils, enchanting tables, ancient debris...), bedrock, and anything holding items (chests, furnaces, shulker boxes, modded storage). Claims and spawn protection are respected, `blocks.destroyBlocks = false` in the server config turns destruction off, and datapacks can adjust the rules with the `rsm:impervious` and `rsm:breakable` block tags.
+
 ### Defense
 - **Physical** damage — melee, arrows, tridents, projectiles, explosions, thorns, stings, sonic boom, falling blocks, cactus — is absorbed by **93 %** (after armor).
 - **Everything else does nothing**: fire, lava, fall damage, drowning, suffocation, freezing, poison, wither, magic and potions, starvation, cramming, lightning, dragon breath, Ad Astra oxygen and temperature. Harmful effects still apply, they just cannot hurt you.
@@ -91,7 +94,7 @@ The ring also has its own creative tab, or `/give @s rsm:ring`.
 
 ## Configuration
 
-- `<world>/serverconfig/rsm-server.toml` — speeds, thresholds, damage, cooldowns, dash. Synced to every client; defaults can go into `defaultconfigs/rsm-server.toml`.
+- `<world>/serverconfig/rsm-server.toml` — speeds, thresholds, damage, cooldowns, dash, Breakthrough, block destruction. Synced to every client; defaults can go into `defaultconfigs/rsm-server.toml`.
 - `config/rsm-client.toml` — FOV boost and HUD.
 - `config/rsm-common.toml` — `ringEnabled`: switch the ring off entirely (no recipe, no creative tab entry, existing rings do nothing). Applies to every world of the game or server and needs a restart; on a server, the server's value wins.
 - What counts as physical damage — the `rsm:physical` damage type tag (`data/rsm/tags/damage_type/physical.json`), editable with a datapack.
@@ -124,6 +127,7 @@ Heavily inspired by [Viltrumite](https://www.curseforge.com/minecraft/mc-mods/vi
 - **Круиз** — присел во время разгона: скорость зафиксирована, отпускай все клавиши и рули мышью; потерянная на повороте скорость добирается сама. Присел ещё раз — тормозишь.
 - **Дэш** — рывок по направлению движения (WASD, в зависании ещё вверх/вниз, стоя — вперёд): ~8 блоков на земле, в быстром полёте — +40 б/с по курсу. Перезарядка 1,5 с.
 - **Скольжение** — задел стену или землю под острым углом (до 30°) — скользишь вдоль; влетел в лоб — остановка и Зависание.
+- **Пробивание** — влетел в лоб на 60+ б/с — пробиваешь неровный туннель шириной около 3 блоков, не теряя скорости; предметы не выпадают. **Непробиваемые** блоки останавливают намертво: обсидиан и всё столь же взрывостойкое (наковальни, стол зачарований, древние обломки), бедрок и всё, где лежат предметы (сундуки, печи, шалкеры). Приваты и защита спавна соблюдаются; `blocks.destroyBlocks = false` в серверном конфиге выключает разрушение; теги `rsm:impervious` и `rsm:breakable` правятся датапаком.
 - **Защита** — физический урон поглощается на 93 %, всё остальное (огонь, лава, падение, удушение, холод, яд, магия, голод, кислород Ad Astra) не проходит вообще. `/kill` и бездна работают.
 - **Слэш** — 175 урона всем в дуге 120° на дистанции меча (сквозь стены не бьёт), перезарядка 0,5 с.
 - **Прямой** — 500 урона цели под прицелом до 4 блоков с сильным отбросом, перезарядка 5 с (уходит и при промахе).
@@ -153,7 +157,7 @@ Heavily inspired by [Viltrumite](https://www.curseforge.com/minecraft/mc-mods/vi
 
 ### Настройка
 
-- `<мир>/serverconfig/rsm-server.toml` — скорости, пороги, урон, перезарядки, дэш (синхронизируется клиентам).
+- `<мир>/serverconfig/rsm-server.toml` — скорости, пороги, урон, перезарядки, дэш, Пробивание, разрушение блоков (синхронизируется клиентам).
 - `config/rsm-client.toml` — FOV и HUD.
 - `config/rsm-common.toml` — `ringEnabled`: полностью выключить кольцо (нет рецепта и вкладки, существующие кольца ничего не дают). Действует на все миры игры или сервера, нужен перезапуск; на сервере решает его значение.
 - Тег `rsm:physical` — что считать физическим уроном, правится датапаком.

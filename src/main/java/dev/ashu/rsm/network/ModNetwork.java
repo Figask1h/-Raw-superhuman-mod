@@ -6,6 +6,7 @@ import dev.ashu.rsm.attack.Attacks;
 import dev.ashu.rsm.client.ClientPassives;
 import dev.ashu.rsm.item.ToggleableItem;
 import dev.ashu.rsm.power.Bearer;
+import dev.ashu.rsm.power.Breakthrough;
 import dev.ashu.rsm.power.DashEffects;
 import dev.ashu.rsm.power.FlightMode;
 import dev.ashu.rsm.power.FlightState;
@@ -31,6 +32,7 @@ public final class ModNetwork {
         registrar.playToServer(AttackPayload.TYPE, AttackPayload.STREAM_CODEC, ModNetwork::handleAttack);
         registrar.playToServer(DashPayload.TYPE, DashPayload.STREAM_CODEC, ModNetwork::handleDash);
         registrar.playToServer(TogglePassivePayload.TYPE, TogglePassivePayload.STREAM_CODEC, ModNetwork::handleTogglePassive);
+        registrar.playToServer(BreakthroughPayload.TYPE, BreakthroughPayload.STREAM_CODEC, ModNetwork::handleBreakthrough);
         // A lambda, so the client-side target class is only resolved when a packet actually arrives on a client.
         registrar.playToClient(PassiveEffectsPayload.TYPE, PassiveEffectsPayload.STREAM_CODEC,
             (payload, context) -> ClientPassives.set(payload.disabledMask()));
@@ -71,6 +73,12 @@ public final class ModNetwork {
     private static void handleTogglePassive(TogglePassivePayload payload, IPayloadContext context) {
         if (context.player() instanceof ServerPlayer player) {
             PassiveEffectsHandler.toggle(player, payload.effect());
+        }
+    }
+
+    private static void handleBreakthrough(BreakthroughPayload payload, IPayloadContext context) {
+        if (context.player() instanceof ServerPlayer player) {
+            Breakthrough.breakOnServer(player, payload.positions());
         }
     }
 

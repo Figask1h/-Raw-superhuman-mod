@@ -1,18 +1,25 @@
 package dev.ashu.rsm.client;
 
 import dev.ashu.rsm.RsmConfig;
+import dev.ashu.rsm.network.BreakthroughPayload;
 import dev.ashu.rsm.network.FlightStatePayload;
 import dev.ashu.rsm.power.Bearer;
+import dev.ashu.rsm.power.Breakthrough;
 import dev.ashu.rsm.power.FlightHooks;
 import dev.ashu.rsm.power.FlightMode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
+
+import java.util.List;
 
 /**
  * Flight state machine of the local Bearer. Runs on the client (player movement is client-authoritative
@@ -196,12 +203,29 @@ public final class FlightController {
 
     /**
      * A block was in the way. A shallow contact is a Slide: vanilla collision already carried us along the
-     * surface, so nothing to do. A head-on hit stops us and drops to hover.
+     * surface, so nothing to do. A head-on hit at Breakthrough speed tunnels on; otherwise it stops us.
      */
     private void onCollision(LocalPlayer player, Vec3 velocity, Vec3 moved) {
         if (incidence(velocity, moved) <= Math.sin(Math.toRadians(RsmConfig.SLIDE_MAX_ANGLE.get()))) return;
+        if (Breakthrough.isFastEnough(speed) && breakThrough(player)) return;
         player.setDeltaMovement(Vec3.ZERO);
         toHover(player);
+    }
+
+    /**
+     * Clears the next tick's worth of path (plus a margin) at once, so the flight never stutters: the blocks
+     * vanish here straight away and the server is told which ones to destroy. False if an Impervious Block
+     * is right in the way.
+     */
+    private boolean breakThrough(LocalPlayer player) {
+        Vec3 center = player.position().add(0.0, player.getBbHeight() / 2.0, 0.0);
+        List<BlockPos> tunnel = Breakthrough.tunnel(player.level(), center, direction, speed / 20.0 + 1.5);
+        if (tunnel.isEmpty()) return false;
+        for (BlockPos pos : tunnel) {
+            player.level().setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
+        }
+        PacketDistributor.sendToServer(new BreakthroughPayload(tunnel));
+        return true;
     }
 
     /**

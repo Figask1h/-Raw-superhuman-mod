@@ -24,6 +24,7 @@ public final class RsmConfig {
 
     // --- Block destruction (Breakthrough, Clap) ---
     public static final ModConfigSpec.BooleanValue DESTROY_BLOCKS;
+    public static final ModConfigSpec.DoubleValue BREAKTHROUGH_MIN_SPEED;
 
     // --- Dash ---
     public static final ModConfigSpec.DoubleValue DASH_DISTANCE;
@@ -74,6 +75,11 @@ public final class RsmConfig {
         b.push("blocks");
         DESTROY_BLOCKS = b.comment("Whether Breakthrough and Clap may destroy blocks at all. Impervious blocks (tag rsm:impervious, obsidian-grade blast resistance, anything holding items) never break; protected areas are respected either way.")
             .define("destroyBlocks", true);
+        b.pop();
+
+        b.push("breakthrough");
+        BREAKTHROUGH_MIN_SPEED = b.comment("Flying head-on into blocks at this speed (blocks/second) or faster tunnels through them instead of stopping.")
+            .defineInRange("minSpeed", 60.0, 0.0, 1000.0);
         b.pop();
 
         b.push("collisions");

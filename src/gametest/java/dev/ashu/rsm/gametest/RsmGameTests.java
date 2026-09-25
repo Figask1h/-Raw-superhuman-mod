@@ -1,17 +1,23 @@
 package dev.ashu.rsm.gametest;
 
 import com.mojang.authlib.GameProfile;
+import com.mojang.logging.LogUtils;
 import dev.ashu.rsm.RawSuperhumanMod;
 import dev.ashu.rsm.attack.AttackKind;
 import dev.ashu.rsm.attack.Attacks;
 import dev.ashu.rsm.power.BlockDestruction;
+import dev.ashu.rsm.power.Breakthrough;
+import dev.ashu.rsm.power.FlightMode;
+import dev.ashu.rsm.power.FlightState;
 import dev.ashu.rsm.power.PassiveEffect;
 import dev.ashu.rsm.power.PassiveEffectsHandler;
+import dev.ashu.rsm.registry.ModAttachments;
 import dev.ashu.rsm.registry.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.server.level.ClientInformation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -25,6 +31,7 @@ import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 import top.theillusivec4.curios.api.CuriosApi;
 
+import java.util.List;
 import java.util.UUID;
 
 /** In-world checks, run by {@code ./gradlew runGameTestServer}. Coordinates are relative to the test's empty 9x6x9 area. */
@@ -33,6 +40,7 @@ import java.util.UUID;
 public final class RsmGameTests {
     /** Yaw that looks along +X. */
     private static final float FACING_EAST = -90.0F;
+    private static final Vec3 EAST = new Vec3(1.0, 0.0, 0.0);
 
     @GameTest(template = "empty")
     public static void ringRecipeIsLoaded(GameTestHelper helper) {
@@ -95,6 +103,87 @@ public final class RsmGameTests {
         BlockPos pos = helper.absolutePos(relative);
         boolean actual = BlockDestruction.isImpervious(helper.getLevel(), pos, helper.getLevel().getBlockState(pos));
         helper.assertTrue(actual == expected, block + (expected ? " should" : " should not") + " be impervious");
+    }
+
+    @GameTest(template = "empty")
+    public static void tunnelEndsAtObsidian(GameTestHelper helper) {
+        stoneBlock(helper, 3, 7);
+        helper.setBlock(new BlockPos(5, 2, 4), Blocks.OBSIDIAN);
+        List<BlockPos> tunnel = Breakthrough.tunnel(helper.getLevel(), helper.absoluteVec(new Vec3(1.5, 2.5, 4.5)), EAST, 7.0);
+        helper.assertTrue(tunnel.contains(helper.absolutePos(new BlockPos(3, 2, 4))), "Tunnel does not start at the wall");
+        helper.assertTrue(tunnel.contains(helper.absolutePos(new BlockPos(4, 2, 4))), "Tunnel stops before the obsidian");
+        helper.assertTrue(!tunnel.contains(helper.absolutePos(new BlockPos(5, 2, 4))), "Tunnel goes through obsidian");
+        helper.assertTrue(!tunnel.contains(helper.absolutePos(new BlockPos(6, 2, 4))), "Tunnel continues behind obsidian");
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty")
+    public static void fastBearerBreaksThrough(GameTestHelper helper) {
+        stoneBlock(helper, 3, 4);
+        ServerPlayer bearer = flying(bearer(helper, 1.5, 2.2, 4.5, FACING_EAST), 150.0);
+        Breakthrough.breakOnServer(bearer, Breakthrough.tunnel(helper.getLevel(), helper.absoluteVec(new Vec3(1.5, 2.5, 4.5)), EAST, 9.0));
+        helper.assertBlockPresent(Blocks.AIR, new BlockPos(3, 2, 4));
+        helper.assertBlockPresent(Blocks.AIR, new BlockPos(4, 2, 4));
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty")
+    public static void slowBearerCannotBreak(GameTestHelper helper) {
+        stoneBlock(helper, 3, 4);
+        ServerPlayer bearer = flying(bearer(helper, 1.5, 2.2, 4.5, FACING_EAST), 40.0);
+        Breakthrough.breakOnServer(bearer, Breakthrough.tunnel(helper.getLevel(), helper.absoluteVec(new Vec3(1.5, 2.5, 4.5)), EAST, 9.0));
+        helper.assertBlockPresent(Blocks.STONE, new BlockPos(3, 2, 4));
+        helper.succeed();
+    }
+
+    /** Server cost of flying at 150 b/s straight up through 150 blocks of solid stone, 7x7 across. */
+    @GameTest(template = "empty")
+    public static void breakthroughCost(GameTestHelper helper) {
+        ServerLevel level = helper.getLevel();
+        BlockPos base = helper.absolutePos(new BlockPos(1, 1, 1));
+        for (int y = 0; y < 150; y++) {
+            for (int x = 0; x < 7; x++) {
+                for (int z = 0; z < 7; z++) level.setBlock(base.offset(x, y, z), Blocks.STONE.defaultBlockState(), Block.UPDATE_CLIENTS);
+            }
+        }
+        ServerPlayer bearer = flying(bearer(helper, 4.5, 0.2, 4.5, FACING_EAST), 150.0);
+        Vec3 up = new Vec3(0.0, 1.0, 0.0);
+        Vec3 center = helper.absoluteVec(new Vec3(4.5, 0.5, 4.5));
+        long tunnelNanos = 0;
+        long destroyNanos = 0;
+        int blocks = 0;
+        for (int tick = 0; tick < 20; tick++) {
+            bearer.setPos(center.x, center.y - 0.3, center.z);
+            long start = System.nanoTime();
+            List<BlockPos> tunnel = Breakthrough.tunnel(level, center, up, 7.5 + 1.5);
+            long computed = System.nanoTime();
+            Breakthrough.breakOnServer(bearer, tunnel);
+            destroyNanos += System.nanoTime() - computed;
+            tunnelNanos += computed - start;
+            blocks += tunnel.size();
+            center = center.add(up.scale(7.5));
+        }
+        LogUtils.getLogger().info("Breakthrough cost: {} blocks in 20 ticks; tunnel {} ms/tick, destroy {} ms/tick",
+            blocks, tunnelNanos / 20 / 1.0E6, destroyNanos / 20 / 1.0E6);
+        helper.assertTrue(blocks > 1500, "Tunnel too small: " + blocks + " blocks");
+        helper.assertTrue(destroyNanos / 20 < 25_000_000L, "Destroying a tick of tunnel takes over half a server tick");
+        helper.succeed();
+    }
+
+    /** Solid stone from x = fromX to toX, 5 high and 5 wide around z = 4. */
+    private static void stoneBlock(GameTestHelper helper, int fromX, int toX) {
+        for (int x = fromX; x <= toX; x++) {
+            for (int y = 0; y <= 4; y++) {
+                for (int z = 2; z <= 6; z++) helper.setBlock(new BlockPos(x, y, z), Blocks.STONE);
+            }
+        }
+    }
+
+    private static ServerPlayer flying(ServerPlayer player, double speed) {
+        FlightState state = player.getData(ModAttachments.FLIGHT);
+        state.mode = FlightMode.BOOST;
+        state.speed = speed;
+        return player;
     }
 
     private static void floor(GameTestHelper helper) {

@@ -15,6 +15,7 @@
 - **Cruise control**: sneak while boosting to lock your speed, then let go of everything and just steer with the mouse. Sneak again to brake.
 - **Dash** (Caps Lock): an 8-block burst on foot, an instant speed kick in the air.
 - Brush a wall or the ground at a shallow angle and you slide along it instead of stopping.
+- **Breakthrough**: hit blocks head-on at 60+ b/s and you tunnel straight through them. Obsidian-grade blocks, bedrock and chests stop you; claims are respected.
 
 ### Defense
 - Physical damage — melee, arrows, explosions, falling anvils — is absorbed by **93 %**.
@@ -52,6 +53,7 @@ Heavily inspired by [Viltrumite](https://www.curseforge.com/minecraft/mc-mods/vi
 - **Круиз**: присядь во время разгона — скорость зафиксирована, отпускай всё и рули мышью. Присел ещё раз — тормозишь.
 - **Дэш** (Caps Lock): рывок на 8 блоков на земле, мгновенная прибавка скорости в воздухе.
 - Задел стену или землю по касательной — скользишь вдоль, а не останавливаешься.
+- **Пробивание**: влетел в блоки в лоб на 60+ б/с — пробиваешь туннель насквозь. Обсидиан и всё столь же прочное, бедрок и сундуки останавливают; приваты соблюдаются.
 
 ### Защита
 - Физический урон — удары, стрелы, взрывы, наковальни — поглощается на **93 %**.
