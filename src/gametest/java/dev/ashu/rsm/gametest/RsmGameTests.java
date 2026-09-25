@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import dev.ashu.rsm.RawSuperhumanMod;
 import dev.ashu.rsm.attack.AttackKind;
 import dev.ashu.rsm.attack.Attacks;
+import dev.ashu.rsm.power.BlockDestruction;
 import dev.ashu.rsm.power.PassiveEffect;
 import dev.ashu.rsm.power.PassiveEffectsHandler;
 import dev.ashu.rsm.registry.ModItems;
@@ -17,6 +18,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.gametest.GameTestHolder;
@@ -75,6 +77,24 @@ public final class RsmGameTests {
         PassiveEffectsHandler.flip(wearer, PassiveEffect.NIGHT_VISION);
         helper.assertTrue(wearer.hasEffect(MobEffects.NIGHT_VISION), "Switching Night Vision off removed a potion's effect");
         helper.succeed();
+    }
+
+    @GameTest(template = "empty")
+    public static void imperviousBlocks(GameTestHelper helper) {
+        Block[] impervious = {Blocks.OBSIDIAN, Blocks.CRYING_OBSIDIAN, Blocks.ANVIL, Blocks.ENCHANTING_TABLE, Blocks.BEDROCK, Blocks.CHEST, Blocks.FURNACE};
+        Block[] breakable = {Blocks.STONE, Blocks.DIRT, Blocks.GLASS, Blocks.OAK_LOG, Blocks.DEEPSLATE, Blocks.IRON_BLOCK};
+        int x = 0;
+        for (Block block : impervious) assertImpervious(helper, new BlockPos(x++, 1, 1), block, true);
+        x = 0;
+        for (Block block : breakable) assertImpervious(helper, new BlockPos(x++, 1, 3), block, false);
+        helper.succeed();
+    }
+
+    private static void assertImpervious(GameTestHelper helper, BlockPos relative, Block block, boolean expected) {
+        helper.setBlock(relative, block);
+        BlockPos pos = helper.absolutePos(relative);
+        boolean actual = BlockDestruction.isImpervious(helper.getLevel(), pos, helper.getLevel().getBlockState(pos));
+        helper.assertTrue(actual == expected, block + (expected ? " should" : " should not") + " be impervious");
     }
 
     private static void floor(GameTestHelper helper) {

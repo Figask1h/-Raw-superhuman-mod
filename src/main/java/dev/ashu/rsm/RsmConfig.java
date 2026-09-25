@@ -22,6 +22,9 @@ public final class RsmConfig {
     // --- Collisions ---
     public static final ModConfigSpec.DoubleValue SLIDE_MAX_ANGLE;
 
+    // --- Block destruction (Breakthrough, Clap) ---
+    public static final ModConfigSpec.BooleanValue DESTROY_BLOCKS;
+
     // --- Dash ---
     public static final ModConfigSpec.DoubleValue DASH_DISTANCE;
     public static final ModConfigSpec.DoubleValue DASH_COOLDOWN;
@@ -66,6 +69,11 @@ public final class RsmConfig {
             .defineInRange("turnLossMinAngle", 70.0, 0.0, 180.0);
         TURN_SPEED_LOSS = b.comment("Fraction of speed lost per degree turned while above turnLossMinAngle (0.003 = a full 180 degree reversal costs about 40%).")
             .defineInRange("turnSpeedLossPerDegree", 0.003, 0.0, 0.1);
+        b.pop();
+
+        b.push("blocks");
+        DESTROY_BLOCKS = b.comment("Whether Breakthrough and Clap may destroy blocks at all. Impervious blocks (tag rsm:impervious, obsidian-grade blast resistance, anything holding items) never break; protected areas are respected either way.")
+            .define("destroyBlocks", true);
         b.pop();
 
         b.push("collisions");
