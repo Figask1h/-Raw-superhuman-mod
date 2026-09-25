@@ -20,6 +20,8 @@ public final class RawSuperhumanMod {
         // to clients on login, so client-side flight math uses the same values as the server.
         container.registerConfig(ModConfig.Type.SERVER, RsmConfig.SERVER_SPEC);
         container.registerConfig(ModConfig.Type.CLIENT, RsmConfig.CLIENT_SPEC);
+        // Item switches: needed before any world loads, see docs/adr/0001.
+        container.registerConfig(ModConfig.Type.COMMON, RsmConfig.COMMON_SPEC);
     }
 
     public static ResourceLocation id(String path) {

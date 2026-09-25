@@ -30,7 +30,7 @@
 With **Ad Astra** installed, fly above the atmosphere and the planet selection screen opens — every planet reachable, no rocket, no fuel. Oxygen and temperature cannot touch you either.
 
 ### Details
-- Every number — speeds, thresholds, damage, cooldowns, dash — lives in `serverconfig/rsm-server.toml` and syncs to clients. FOV boost and HUD are client options.
+- Every number — speeds, thresholds, damage, cooldowns, dash — lives in `serverconfig/rsm-server.toml` and syncs to clients. FOV boost and HUD are client options. The ring itself can be switched off in `config/rsm-common.toml`.
 - What counts as "physical" damage is a datapack tag (`rsm:physical`).
 - Works on dedicated servers; movement is validated the same way vanilla elytra flight is.
 - Crafted from 6 netherite blocks, 2 beacons and a diamond block: an end-game price for an end-of-balance item. Also in its own creative tab.
@@ -67,7 +67,7 @@ Heavily inspired by [Viltrumite](https://www.curseforge.com/minecraft/mc-mods/vi
 С установленным **Ad Astra** поднимись выше атмосферы — откроется экран выбора планеты. Все планеты, без ракеты и топлива. Кислород и температура тоже не страшны.
 
 ### Детали
-- Все цифры — скорости, пороги, урон, перезарядки, дэш — в `serverconfig/rsm-server.toml`, синхронизируются клиентам. FOV и HUD — клиентские настройки.
+- Все цифры — скорости, пороги, урон, перезарядки, дэш — в `serverconfig/rsm-server.toml`, синхронизируются клиентам. FOV и HUD — клиентские настройки. Само кольцо можно выключить в `config/rsm-common.toml`.
 - Что считать физическим уроном — тег датапака `rsm:physical`.
 - Работает на выделенных серверах.
 - Крафт: 6 незеритовых блоков, 2 маяка и алмазный блок — эндгеймовая цена за конец баланса. Есть и своя креатив-вкладка.

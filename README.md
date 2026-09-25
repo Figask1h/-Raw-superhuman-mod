@@ -93,6 +93,7 @@ The ring also has its own creative tab, or `/give @s rsm:ring`.
 
 - `<world>/serverconfig/rsm-server.toml` — speeds, thresholds, damage, cooldowns, dash. Synced to every client; defaults can go into `defaultconfigs/rsm-server.toml`.
 - `config/rsm-client.toml` — FOV boost and HUD.
+- `config/rsm-common.toml` — `ringEnabled`: switch the ring off entirely (no recipe, no creative tab entry, existing rings do nothing). Applies to every world of the game or server and needs a restart; on a server, the server's value wins.
 - What counts as physical damage — the `rsm:physical` damage type tag (`data/rsm/tags/damage_type/physical.json`), editable with a datapack.
 
 ## Building
@@ -154,6 +155,7 @@ Heavily inspired by [Viltrumite](https://www.curseforge.com/minecraft/mc-mods/vi
 
 - `<мир>/serverconfig/rsm-server.toml` — скорости, пороги, урон, перезарядки, дэш (синхронизируется клиентам).
 - `config/rsm-client.toml` — FOV и HUD.
+- `config/rsm-common.toml` — `ringEnabled`: полностью выключить кольцо (нет рецепта и вкладки, существующие кольца ничего не дают). Действует на все миры игры или сервера, нужен перезапуск; на сервере решает его значение.
 - Тег `rsm:physical` — что считать физическим уроном, правится датапаком.
 
 Сборка: `./gradlew build`. Лицензия MIT.

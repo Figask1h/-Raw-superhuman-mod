@@ -1,4 +1,7 @@
 {
+  "neoforge:conditions": [
+    { "type": "rsm:item_enabled", "item": "ring" }
+  ],
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "pattern": [

@@ -8,6 +8,8 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 public final class RsmConfig {
     public static final ModConfigSpec SERVER_SPEC;
     public static final ModConfigSpec CLIENT_SPEC;
+    /** Item switches. Recipes are filtered before a world (and its server config) loads, so these live in the common config. */
+    public static final ModConfigSpec COMMON_SPEC;
 
     // --- Flight ---
     public static final ModConfigSpec.DoubleValue MAX_SPEED;
@@ -41,6 +43,9 @@ public final class RsmConfig {
 
     // --- Space (Ad Astra) ---
     public static final ModConfigSpec.BooleanValue SPACE_ENABLED;
+
+    // --- Items (common) ---
+    public static final ModConfigSpec.BooleanValue RING_ENABLED;
 
     // --- Client ---
     public static final ModConfigSpec.DoubleValue FOV_BOOST_DEGREES;
@@ -114,6 +119,13 @@ public final class RsmConfig {
         SHOW_HUD = c.comment("Show speed / cruise / attack cooldown overlay.").define("showHud", true);
         c.pop();
         CLIENT_SPEC = c.build();
+
+        ModConfigSpec.Builder m = new ModConfigSpec.Builder();
+        m.push("items");
+        RING_ENABLED = m.comment("The DNA Alteration Ring. When false it has no recipe and no creative tab entry, and rings that already exist do nothing. Applies to every world of this game or server.")
+            .gameRestart().define("ringEnabled", true);
+        m.pop();
+        COMMON_SPEC = m.build();
     }
 
     private RsmConfig() {}

@@ -1,4 +1,7 @@
 {
+  "neoforge:conditions": [
+    { "type": "rsm:item_enabled", "item": "ring" }
+  ],
   "parent": "minecraft:recipes/root",
   "criteria": {
     "has_netherite_block": {

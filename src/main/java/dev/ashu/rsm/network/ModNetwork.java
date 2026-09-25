@@ -4,6 +4,7 @@ import dev.ashu.rsm.RawSuperhumanMod;
 import dev.ashu.rsm.RsmConfig;
 import dev.ashu.rsm.attack.Attacks;
 import dev.ashu.rsm.client.ClientPassives;
+import dev.ashu.rsm.item.ToggleableItem;
 import dev.ashu.rsm.power.Bearer;
 import dev.ashu.rsm.power.DashEffects;
 import dev.ashu.rsm.power.FlightMode;
@@ -33,6 +34,8 @@ public final class ModNetwork {
         // A lambda, so the client-side target class is only resolved when a packet actually arrives on a client.
         registrar.playToClient(PassiveEffectsPayload.TYPE, PassiveEffectsPayload.STREAM_CODEC,
             (payload, context) -> ClientPassives.set(payload.disabledMask()));
+        registrar.playToClient(EnabledItemsPayload.TYPE, EnabledItemsPayload.STREAM_CODEC,
+            (payload, context) -> ToggleableItem.setSynced(payload.disabledMask()));
     }
 
     /** Runs on the server main thread. The client is authoritative for movement; the server only sanity-checks. */

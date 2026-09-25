@@ -1,6 +1,7 @@
 {
   "item.rsm.ring": "DNA Alteration Ring",
   "item.rsm.ring.tooltip": "Grants unbalanced power.",
+  "item.rsm.disabled": "Switched off in the mod config",
   "key.categories.rsm": "Raw superhuman mod",
   "key.rsm.slash": "Slash",
   "key.rsm.strike": "Strike",

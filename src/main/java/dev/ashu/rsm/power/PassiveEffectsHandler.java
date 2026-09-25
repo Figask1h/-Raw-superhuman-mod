@@ -4,6 +4,7 @@ import dev.ashu.rsm.RawSuperhumanMod;
 import dev.ashu.rsm.network.PassiveEffectsPayload;
 import dev.ashu.rsm.registry.ModAttachments;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -14,10 +15,15 @@ import net.neoforged.neoforge.network.PacketDistributor;
 public final class PassiveEffectsHandler {
 
     public static void toggle(ServerPlayer player, PassiveEffect effect) {
-        PassiveEffects switches = player.getData(ModAttachments.PASSIVES);
-        switches.toggle(effect);
-        if (!switches.isEnabled(effect)) effect.remove(player);
+        flip(player, effect);
         sync(player);
+    }
+
+    /** Flips the switch; turning it off takes the ring's effect away at once instead of letting it run out. */
+    public static void flip(LivingEntity wearer, PassiveEffect effect) {
+        PassiveEffects switches = wearer.getData(ModAttachments.PASSIVES);
+        switches.toggle(effect);
+        if (!switches.isEnabled(effect)) effect.remove(wearer);
     }
 
     @SubscribeEvent

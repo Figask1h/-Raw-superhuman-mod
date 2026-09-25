@@ -2,6 +2,7 @@ package dev.ashu.rsm.client;
 
 import dev.ashu.rsm.RawSuperhumanMod;
 import dev.ashu.rsm.RsmConfig;
+import dev.ashu.rsm.item.ToggleableItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.neoforged.api.distmarker.Dist;
@@ -63,6 +64,7 @@ public final class RsmClient {
             ModKeys.COOLDOWNS.reset();
             Dash.reset();
             ClientPassives.reset();
+            ToggleableItem.resetSynced();
         }
 
         @SubscribeEvent

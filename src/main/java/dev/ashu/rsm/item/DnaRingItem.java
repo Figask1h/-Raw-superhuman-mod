@@ -37,7 +37,7 @@ public class DnaRingItem extends Item implements ICurioItem {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         LivingEntity wearer = slotContext.entity();
-        if (wearer.level().isClientSide) return;
+        if (wearer.level().isClientSide || !ToggleableItem.RING.isEnabled(wearer.level())) return;
         PassiveEffects switches = wearer.getData(ModAttachments.PASSIVES);
         for (PassiveEffect effect : PassiveEffect.values()) {
             if (switches.isEnabled(effect)) effect.apply(wearer);
@@ -68,6 +68,9 @@ public class DnaRingItem extends Item implements ICurioItem {
     @Override
     public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(SlotContext slotContext, ResourceLocation id, ItemStack stack) {
         Multimap<Holder<Attribute>, AttributeModifier> modifiers = LinkedHashMultimap.create();
+        LivingEntity wearer = slotContext.entity();
+        boolean enabled = wearer != null ? ToggleableItem.RING.isEnabled(wearer.level()) : ToggleableItem.RING.isEnabledOnClient();
+        if (!enabled) return modifiers;
         modifiers.put(NeoForgeMod.CREATIVE_FLIGHT, new AttributeModifier(id, 1.0, AttributeModifier.Operation.ADD_VALUE));
         return modifiers;
     }
@@ -75,5 +78,8 @@ public class DnaRingItem extends Item implements ICurioItem {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable("item.rsm.ring.tooltip").withStyle(ChatFormatting.LIGHT_PURPLE));
+        if (!ToggleableItem.RING.isEnabledOnClient()) {
+            tooltip.add(Component.translatable("item.rsm.disabled").withStyle(ChatFormatting.RED));
+        }
     }
 }

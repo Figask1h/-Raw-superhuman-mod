@@ -1,6 +1,7 @@
 {
   "item.rsm.ring": "Кольцо изменения ДНК",
   "item.rsm.ring.tooltip": "Дает дизбалансную силу.",
+  "item.rsm.disabled": "Отключено в конфиге мода",
   "key.categories.rsm": "Raw superhuman mod",
   "key.rsm.slash": "Слэш",
   "key.rsm.strike": "Прямой",
