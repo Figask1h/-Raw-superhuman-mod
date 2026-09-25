@@ -1,6 +1,7 @@
 package dev.ashu.rsm.client;
 
 import dev.ashu.rsm.RsmConfig;
+import dev.ashu.rsm.network.DashPayload;
 import dev.ashu.rsm.power.Bearer;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
@@ -8,15 +9,17 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
  * Dash: a burst of movement in the direction the player is moving (WASD, plus jump/sneak while
  * hovering; standing still dashes forward). On foot or in hover it is a velocity impulse that
  * vanilla friction turns into roughly dashDistance blocks; in fast flight it becomes a speed boost.
- * Movement is client-authoritative, so the whole thing lives on the client; only the cooldown is tracked.
+ * Movement is client-authoritative, so the dash itself lives on the client; the server is only told
+ * about it so other players see and hear it too.
  */
 public final class Dash {
-    /** Ticks between dashes; not an AttackKind because the server never sees a dash. */
+    /** Ticks between dashes; not an AttackKind because the server never checks a dash, it only shows it to others. */
     private static int readyTick;
     private static int startedTick;
     /**
@@ -63,6 +66,7 @@ public final class Dash {
                 player.getRandomX(0.6), player.getY() + player.getRandom().nextDouble() * 0.6, player.getRandomZ(0.6),
                 (player.getRandom().nextDouble() - 0.5) * 0.2, 0.02, (player.getRandom().nextDouble() - 0.5) * 0.2);
         }
+        PacketDistributor.sendToServer(DashPayload.INSTANCE);
     }
 
     /** Movement keys relative to the camera yaw; vertical keys count only while flying. Falls back to velocity, then to facing. */

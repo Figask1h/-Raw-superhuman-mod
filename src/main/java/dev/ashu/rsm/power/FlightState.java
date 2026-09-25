@@ -18,6 +18,8 @@ public final class FlightState {
      * it re-arms only after descending well below it, so closing the planet screen does not reopen it.
      */
     public boolean ascentArmed = true;
+    /** Player tick count of the last dash shown to other players; throttles clients that spam dash packets. */
+    public int lastDashTick = Integer.MIN_VALUE / 2;
 
     public boolean isFast() {
         return mode.isFast();

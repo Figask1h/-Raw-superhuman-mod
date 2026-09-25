@@ -4,6 +4,7 @@ import dev.ashu.rsm.RawSuperhumanMod;
 import dev.ashu.rsm.RsmConfig;
 import dev.ashu.rsm.attack.Attacks;
 import dev.ashu.rsm.power.Bearer;
+import dev.ashu.rsm.power.DashEffects;
 import dev.ashu.rsm.power.FlightMode;
 import dev.ashu.rsm.power.FlightState;
 import dev.ashu.rsm.registry.ModAttachments;
@@ -21,9 +22,11 @@ public final class ModNetwork {
 
     @SubscribeEvent
     static void register(RegisterPayloadHandlersEvent event) {
-        PayloadRegistrar registrar = event.registrar("1");
+        // Bump when payloads change: a 0.2 client and a 0.3 server must refuse each other.
+        PayloadRegistrar registrar = event.registrar("2");
         registrar.playToServer(FlightStatePayload.TYPE, FlightStatePayload.STREAM_CODEC, ModNetwork::handleFlightState);
         registrar.playToServer(AttackPayload.TYPE, AttackPayload.STREAM_CODEC, ModNetwork::handleAttack);
+        registrar.playToServer(DashPayload.TYPE, DashPayload.STREAM_CODEC, ModNetwork::handleDash);
     }
 
     /** Runs on the server main thread. The client is authoritative for movement; the server only sanity-checks. */
@@ -47,6 +50,12 @@ public final class ModNetwork {
     private static void handleAttack(AttackPayload payload, IPayloadContext context) {
         if (context.player() instanceof ServerPlayer player) {
             Attacks.perform(player, payload.kind());
+        }
+    }
+
+    private static void handleDash(DashPayload payload, IPayloadContext context) {
+        if (context.player() instanceof ServerPlayer player) {
+            DashEffects.showToOthers(player);
         }
     }
 
