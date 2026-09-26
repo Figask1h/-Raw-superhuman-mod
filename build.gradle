@@ -25,6 +25,7 @@ sourceSets {
 configurations {
     gametestImplementation.extendsFrom implementation
     gametestRuntimeOnly.extendsFrom runtimeOnly
+    gametestCompileOnly.extendsFrom compileOnly
 }
 
 repositories {

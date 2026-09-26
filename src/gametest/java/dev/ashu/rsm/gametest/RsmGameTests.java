@@ -3,6 +3,7 @@ package dev.ashu.rsm.gametest;
 import com.mojang.authlib.GameProfile;
 import com.mojang.logging.LogUtils;
 import dev.ashu.rsm.RawSuperhumanMod;
+import earth.terrarium.adastra.api.events.AdAstraEvents;
 import dev.ashu.rsm.attack.AttackKind;
 import dev.ashu.rsm.attack.Attacks;
 import dev.ashu.rsm.power.BlockDestruction;
@@ -167,6 +168,17 @@ public final class RsmGameTests {
             blocks, tunnelNanos / 20 / 1.0E6, destroyNanos / 20 / 1.0E6);
         helper.assertTrue(blocks > 1500, "Tunnel too small: " + blocks + " blocks");
         helper.assertTrue(destroyNanos / 20 < 25_000_000L, "Destroying a tick of tunnel takes over half a server tick");
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty")
+    public static void bearerSurvivesSpace(GameTestHelper helper) {
+        ServerPlayer bearer = bearer(helper, 1.5, 1, 4.5, FACING_EAST);
+        Zombie zombie = target(helper, 4.5, 1, 4.5);
+        helper.assertTrue(AdAstraEvents.EntityOxygenEvent.fire(bearer, false), "Ad Astra thinks a Bearer has no oxygen");
+        helper.assertTrue(!AdAstraEvents.EntityOxygenEvent.fire(zombie, false), "Oxygen immunity leaked to a zombie");
+        helper.assertTrue(!AdAstraEvents.ColdTemperatureTickEvent.fire(helper.getLevel(), bearer), "Ad Astra still freezes a Bearer");
+        helper.assertTrue(AdAstraEvents.ColdTemperatureTickEvent.fire(helper.getLevel(), zombie), "Cold immunity leaked to a zombie");
         helper.succeed();
     }
 

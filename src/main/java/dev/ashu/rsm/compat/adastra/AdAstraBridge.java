@@ -1,6 +1,7 @@
 package dev.ashu.rsm.compat.adastra;
 
 import dev.ashu.rsm.power.Bearer;
+import earth.terrarium.adastra.api.events.AdAstraEvents;
 import earth.terrarium.adastra.api.planets.Planet;
 import earth.terrarium.adastra.api.planets.PlanetApi;
 import earth.terrarium.adastra.common.config.AdAstraConfig;
@@ -8,6 +9,7 @@ import earth.terrarium.adastra.common.menus.PlanetsMenu;
 import earth.terrarium.adastra.common.menus.base.PlanetsMenuProvider;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 /**
@@ -15,6 +17,15 @@ import net.minecraft.world.entity.player.Player;
  * (see {@link dev.ashu.rsm.power.SpaceHandler}); the JVM resolves these imports lazily.
  */
 public final class AdAstraBridge {
+
+    /**
+     * Full space immunity: Ad Astra itself treats a Bearer as breathing (no air loss, no suffocation) and skips
+     * freezing it in the cold of space. Call once at startup, only with Ad Astra present.
+     */
+    public static void registerEvents() {
+        AdAstraEvents.EntityOxygenEvent.register((entity, hasOxygen) -> hasOxygen || entity instanceof LivingEntity living && Bearer.isBearer(living));
+        AdAstraEvents.ColdTemperatureTickEvent.register((level, entity) -> !Bearer.isBearer(entity));
+    }
 
     /** Height above which a rocket would open the planet screen; the Bearer uses the same line. */
     public static int atmosphereLeave() {

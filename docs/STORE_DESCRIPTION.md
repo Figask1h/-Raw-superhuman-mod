@@ -27,7 +27,7 @@
 - **Strike** (mouse 5): 500 damage to the target under your crosshair with a brutal knockback, 5 s cooldown.
 
 ### Space (Ad Astra)
-With **Ad Astra** installed, fly above the atmosphere and the planet selection screen opens — every planet reachable, no rocket, no fuel. Oxygen and temperature cannot touch you either.
+With **Ad Astra** installed, fly above the atmosphere and the planet selection screen opens — every planet reachable, no rocket, no fuel. You breathe without oxygen and never freeze in space — no suit needed.
 
 ### Details
 - Every number — speeds, thresholds, damage, cooldowns, dash — lives in `serverconfig/rsm-server.toml` and syncs to clients. FOV boost and HUD are client options. The ring itself can be switched off in `config/rsm-common.toml`.
@@ -64,7 +64,7 @@ Heavily inspired by [Viltrumite](https://www.curseforge.com/minecraft/mc-mods/vi
 - **Прямой** (кнопка мыши 5): 500 урона цели под прицелом с жёстким отбросом, перезарядка 5 с.
 
 ### Космос (Ad Astra)
-С установленным **Ad Astra** поднимись выше атмосферы — откроется экран выбора планеты. Все планеты, без ракеты и топлива. Кислород и температура тоже не страшны.
+С установленным **Ad Astra** поднимись выше атмосферы — откроется экран выбора планеты. Все планеты, без ракеты и топлива. Без кислорода дышишь, в космосе не замерзаешь — скафандр не нужен.
 
 ### Детали
 - Все цифры — скорости, пороги, урон, перезарядки, дэш — в `serverconfig/rsm-server.toml`, синхронизируются клиентам. FOV и HUD — клиентские настройки. Само кольцо можно выключить в `config/rsm-common.toml`.

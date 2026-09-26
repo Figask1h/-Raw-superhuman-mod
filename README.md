@@ -46,7 +46,7 @@ Hit blocks at 60 blocks/s or more (walls, hills, the ground) and you punch a rag
 ### Space (Ad Astra)
 With **Ad Astra** installed, flying above the atmosphere-leave height (600 by default) opens the planet selection
 screen exactly like a rocket would — every planet available, no rocket, no fuel. You arrive at the top of the target
-planet's sky and fly down.
+planet's sky and fly down. In space and on airless planets you breathe without oxygen (your air never runs out) and the cold never freezes you — no space suit needed.
 
 ### Haste & Night Vision
 Haste III and Night Vision while the ring is worn, each switchable on its own (H and N by default). Your choice is remembered; switching off only removes the ring's effect, never a potion or beacon.
@@ -127,7 +127,7 @@ Heavily inspired by [Viltrumite](https://www.curseforge.com/minecraft/mc-mods/vi
 - **Защита** — физический урон поглощается на 99 %, всё остальное (огонь, лава, падение, удушение, холод, яд, магия, голод, кислород Ad Astra) не проходит вообще. `/kill` и бездна работают.
 - **Слэш** — 175 урона всем в дуге 120° на дистанции меча (сквозь стены не бьёт), перезарядка 0,5 с.
 - **Прямой** — 500 урона цели под прицелом до 4 блоков с сильным отбросом, перезарядка 5 с (уходит и при промахе).
-- **Космос** — с Ad Astra выше 600 открывается экран планет, все планеты доступны.
+- **Космос** — с Ad Astra выше 600 открывается экран планет, все планеты доступны. В космосе и на планетах без воздуха дышишь без кислорода и не замерзаешь — скафандр не нужен.
 - **Спешка III и Ночное зрение** — пока кольцо надето; каждый эффект включается и выключается отдельно (H и N), выбор запоминается. Иконки справа от хотбара, выключенный эффект — бледный.
 
 ### Управление

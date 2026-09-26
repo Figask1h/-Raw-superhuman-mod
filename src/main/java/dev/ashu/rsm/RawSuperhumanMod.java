@@ -1,10 +1,12 @@
 package dev.ashu.rsm;
 
+import dev.ashu.rsm.compat.adastra.AdAstraBridge;
 import dev.ashu.rsm.registry.ModAttachments;
 import dev.ashu.rsm.registry.ModItems;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 
@@ -15,6 +17,9 @@ public final class RawSuperhumanMod {
     public RawSuperhumanMod(IEventBus modBus, ModContainer container) {
         ModItems.register(modBus);
         ModAttachments.register(modBus);
+        if (ModList.get().isLoaded("ad_astra")) {
+            AdAstraBridge.registerEvents();
+        }
 
         // Gameplay numbers are a SERVER config: it lives with the world and NeoForge syncs it
         // to clients on login, so client-side flight math uses the same values as the server.
