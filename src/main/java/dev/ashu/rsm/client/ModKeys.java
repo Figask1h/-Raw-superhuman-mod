@@ -19,7 +19,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.lwjgl.glfw.GLFW;
 
 /**
- * Key bindings (all rebindable in Controls): attacks on mouse 4 / mouse 5, Dash on Caps Lock, Passive Effect
+ * Key bindings (all rebindable in Controls): attacks on mouse 4 / mouse 5 / G, Dash on Caps Lock, Passive Effect
  * switches on H / N. Also the client-side cooldown mirror for the HUD.
  */
 @EventBusSubscriber(modid = RawSuperhumanMod.MOD_ID, value = Dist.CLIENT)
@@ -27,6 +27,7 @@ public final class ModKeys {
     public static final String CATEGORY = "key.categories.rsm";
     public static final KeyMapping SLASH = new KeyMapping("key.rsm.slash", InputConstants.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_4, CATEGORY);
     public static final KeyMapping STRIKE = new KeyMapping("key.rsm.strike", InputConstants.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_5, CATEGORY);
+    public static final KeyMapping CLAP = new KeyMapping("key.rsm.clap", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_G, CATEGORY);
     public static final KeyMapping DASH = new KeyMapping("key.rsm.dash", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_CAPS_LOCK, CATEGORY);
     public static final KeyMapping TOGGLE_HASTE = new KeyMapping("key.rsm.toggle_haste", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_H, CATEGORY);
     public static final KeyMapping TOGGLE_NIGHT_VISION = new KeyMapping("key.rsm.toggle_night_vision", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_N, CATEGORY);
@@ -38,19 +39,25 @@ public final class ModKeys {
     static void registerKeys(RegisterKeyMappingsEvent event) {
         event.register(SLASH);
         event.register(STRIKE);
+        event.register(CLAP);
         event.register(DASH);
         event.register(TOGGLE_HASTE);
         event.register(TOGGLE_NIGHT_VISION);
     }
 
     public static KeyMapping keyFor(AttackKind kind) {
-        return kind == AttackKind.SLASH ? SLASH : STRIKE;
+        return switch (kind) {
+            case SLASH -> SLASH;
+            case STRIKE -> STRIKE;
+            case CLAP -> CLAP;
+        };
     }
 
     /** Called every client tick after the game processed input. */
     static void tick(LocalPlayer player) {
         while (SLASH.consumeClick()) tryAttack(player, AttackKind.SLASH);
         while (STRIKE.consumeClick()) tryAttack(player, AttackKind.STRIKE);
+        while (CLAP.consumeClick()) tryAttack(player, AttackKind.CLAP);
         while (DASH.consumeClick()) Dash.tryDash(player);
         while (TOGGLE_HASTE.consumeClick()) togglePassive(player, PassiveEffect.HASTE);
         while (TOGGLE_NIGHT_VISION.consumeClick()) togglePassive(player, PassiveEffect.NIGHT_VISION);

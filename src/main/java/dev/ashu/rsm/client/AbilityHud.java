@@ -14,12 +14,13 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 
 /**
- * Icon row right of the hotbar: Slash, Strike and Dash, shaded from the top while on cooldown, then the
+ * Icon row right of the hotbar: Slash, Strike, Clap and Dash, shaded from the top while on cooldown, then the
  * Passive Effects, faded while switched off.
  */
 public final class AbilityHud {
     private static final ResourceLocation SLASH_ICON = RawSuperhumanMod.id("textures/gui/slash.png");
     private static final ResourceLocation STRIKE_ICON = RawSuperhumanMod.id("textures/gui/strike.png");
+    private static final ResourceLocation CLAP_ICON = RawSuperhumanMod.id("textures/gui/clap.png");
     private static final ResourceLocation DASH_ICON = RawSuperhumanMod.id("textures/gui/dash.png");
     private static final int ICON = 16;
     private static final int GAP = 4;
@@ -40,6 +41,8 @@ public final class AbilityHud {
         drawIcon(graphics, SLASH_ICON, x, y, ModKeys.COOLDOWNS.remainingFraction(AttackKind.SLASH, now));
         x += ICON + GAP;
         drawIcon(graphics, STRIKE_ICON, x, y, ModKeys.COOLDOWNS.remainingFraction(AttackKind.STRIKE, now));
+        x += ICON + GAP;
+        drawIcon(graphics, CLAP_ICON, x, y, ModKeys.COOLDOWNS.remainingFraction(AttackKind.CLAP, now));
         x += ICON + GAP;
         drawIcon(graphics, DASH_ICON, x, y, Dash.remainingFraction(now));
         x += ICON + GAP + GROUP_GAP;

@@ -25,7 +25,7 @@
 - **Haste III** and **Night Vision** while the ring is on, each switchable with its own key.
 - **Slash** (mouse 4): 175 damage to everything in a sword-reach arc in front of you (walls stop it), 0.5 s cooldown.
 - **Strike** (mouse 5): 500 damage to the target under your crosshair with a brutal knockback, 5 s cooldown.
-
+- **Clap** (G): a directed blast that tears a ragged crater through soft ground and a few layers of stone, 50 damage and a big shove to everything in front, 3 s cooldown. Obsidian-grade blocks shield what is behind them.
 ### Space (Ad Astra)
 With **Ad Astra** installed, fly above the atmosphere and the planet selection screen opens — every planet reachable, no rocket, no fuel. You breathe without oxygen and never freeze in space — no suit needed.
 
@@ -62,7 +62,7 @@ Heavily inspired by [Viltrumite](https://www.curseforge.com/minecraft/mc-mods/vi
 - **Спешка III** и **Ночное зрение**, пока кольцо надето; каждый выключается своей клавишей.
 - **Слэш** (кнопка мыши 4): 175 урона всем в дуге перед собой на дистанции меча (сквозь стены не бьёт), перезарядка 0,5 с.
 - **Прямой** (кнопка мыши 5): 500 урона цели под прицелом с жёстким отбросом, перезарядка 5 с.
-
+- **Хлопок** (G): направленный взрыв — неровная воронка в мягком грунте и паре слоёв камня, 50 урона и сильный отброс всему впереди, перезарядка 3 с. Обсидиан и всё столь же прочное закрывает то, что за ним.
 ### Космос (Ad Astra)
 С установленным **Ad Astra** поднимись выше атмосферы — откроется экран выбора планеты. Все планеты, без ракеты и топлива. Без кислорода дышишь, в космосе не замерзаешь — скафандр не нужен.
 

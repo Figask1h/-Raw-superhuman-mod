@@ -22,7 +22,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
-/** Server-side execution of Slash and Strike. The client only asks; the server checks Bearer status and cooldowns. */
+/** Server-side execution of Slash, Strike and Clap. The client only asks; the server checks Bearer status and cooldowns. */
 public final class Attacks {
 
     public static void perform(ServerPlayer player, AttackKind kind) {
@@ -36,6 +36,7 @@ public final class Attacks {
         switch (kind) {
             case SLASH -> slash(player);
             case STRIKE -> strike(player);
+            case CLAP -> Clap.perform(player);
         }
     }
 
@@ -96,14 +97,14 @@ public final class Attacks {
         }
     }
 
-    private static boolean canTarget(ServerPlayer player, Entity entity) {
+    static boolean canTarget(ServerPlayer player, Entity entity) {
         if (entity == player || !entity.isAlive() || entity.isSpectator() || !entity.isAttackable()) return false;
         if (entity instanceof ArmorStand stand && stand.isMarker()) return false;
         return !player.isAlliedTo(entity);
     }
 
     /** Walls stop the Slash: some part of the target (nearest point, centre or eyes) must be in plain view. */
-    private static boolean isVisible(ServerLevel level, ServerPlayer player, Vec3 eye, LivingEntity target, Vec3 closest) {
+    static boolean isVisible(ServerLevel level, ServerPlayer player, Vec3 eye, LivingEntity target, Vec3 closest) {
         for (Vec3 point : new Vec3[] {closest, target.getBoundingBox().getCenter(), target.getEyePosition()}) {
             ClipContext ray = new ClipContext(eye, point, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player);
             if (level.clip(ray).getType() == HitResult.Type.MISS) return true;
@@ -111,14 +112,14 @@ public final class Attacks {
         return false;
     }
 
-    private static Vec3 closestPoint(AABB box, Vec3 point) {
+    static Vec3 closestPoint(AABB box, Vec3 point) {
         return new Vec3(
             Mth.clamp(point.x, box.minX, box.maxX),
             Mth.clamp(point.y, box.minY, box.maxY),
             Mth.clamp(point.z, box.minZ, box.maxZ));
     }
 
-    private static double angleBetween(Vec3 a, Vec3 b) {
+    static double angleBetween(Vec3 a, Vec3 b) {
         double denominator = a.length() * b.length();
         if (denominator < 1.0E-8) return 0.0;
         return Math.acos(Mth.clamp(a.dot(b) / denominator, -1.0, 1.0));

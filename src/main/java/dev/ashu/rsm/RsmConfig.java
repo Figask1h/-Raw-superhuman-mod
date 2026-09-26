@@ -40,6 +40,13 @@ public final class RsmConfig {
     public static final ModConfigSpec.DoubleValue STRIKE_COOLDOWN;
     public static final ModConfigSpec.DoubleValue STRIKE_RANGE;
     public static final ModConfigSpec.DoubleValue STRIKE_KNOCKBACK;
+    public static final ModConfigSpec.DoubleValue CLAP_DAMAGE;
+    public static final ModConfigSpec.DoubleValue CLAP_COOLDOWN;
+    public static final ModConfigSpec.DoubleValue CLAP_RANGE;
+    public static final ModConfigSpec.DoubleValue CLAP_CONE_DEGREES;
+    public static final ModConfigSpec.DoubleValue CLAP_TILT_DEGREES;
+    public static final ModConfigSpec.DoubleValue CLAP_POWER;
+    public static final ModConfigSpec.DoubleValue CLAP_KNOCKBACK;
 
     // --- Space (Ad Astra) ---
     public static final ModConfigSpec.BooleanValue SPACE_ENABLED;
@@ -106,6 +113,20 @@ public final class RsmConfig {
         STRIKE_RANGE = b.comment("Reach in blocks along the crosshair ray.").defineInRange("range", 4.0, 0.5, 32.0);
         STRIKE_KNOCKBACK = b.comment("Knockback strength applied to the target (vanilla melee is about 0.4).")
             .defineInRange("knockback", 2.5, 0.0, 20.0);
+        b.pop();
+
+        b.push("clap");
+        CLAP_DAMAGE = b.defineInRange("damage", 50.0, 0.0, 10000.0);
+        CLAP_COOLDOWN = b.comment("Seconds.").defineInRange("cooldown", 3.0, 0.0, 600.0);
+        CLAP_RANGE = b.comment("How far the blast reaches along the look, blocks (each ray varies by about 20%).")
+            .defineInRange("range", 8.0, 1.0, 32.0);
+        CLAP_CONE_DEGREES = b.comment("Total width of the blast cone.").defineInRange("coneDegrees", 60.0, 1.0, 180.0);
+        CLAP_TILT_DEGREES = b.comment("The blast aims this many degrees below the look, so looking straight ahead still bites into the ground in front.")
+            .defineInRange("tiltDegrees", 15.0, 0.0, 90.0);
+        CLAP_POWER = b.comment("How much the blast can chew through along one ray. Each block costs about its blast resistance: 20 goes through about 3 blocks of stone or the whole range of dirt.")
+            .defineInRange("power", 20.0, 0.0, 1000.0);
+        CLAP_KNOCKBACK = b.comment("Knockback strength on everything hit (vanilla melee is about 0.4).")
+            .defineInRange("knockback", 2.0, 0.0, 20.0);
         b.pop();
 
         b.push("space");

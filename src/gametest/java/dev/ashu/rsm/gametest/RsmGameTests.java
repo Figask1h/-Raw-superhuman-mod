@@ -182,6 +182,39 @@ public final class RsmGameTests {
         helper.succeed();
     }
 
+    @GameTest(template = "empty")
+    public static void clapHitsWhatIsAhead(GameTestHelper helper) {
+        floor(helper);
+        ServerPlayer bearer = bearer(helper, 1.5, 1, 4.5, FACING_EAST);
+        Zombie zombie = target(helper, 4.5, 1, 4.5);
+        Attacks.perform(bearer, AttackKind.CLAP);
+        helper.assertTrue(zombie.isDeadOrDying(), "Clap missed a zombie three blocks ahead");
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty")
+    public static void clapStopsAtObsidian(GameTestHelper helper) {
+        floor(helper);
+        for (int x = 3; x <= 7; x++) {
+            for (int y = 1; y <= 3; y++) {
+                for (int z = 2; z <= 6; z++) helper.setBlock(new BlockPos(x, y, z), x == 4 ? Blocks.OBSIDIAN : Blocks.DIRT);
+            }
+        }
+        ServerPlayer bearer = bearer(helper, 1.5, 1, 4.5, FACING_EAST);
+        Attacks.perform(bearer, AttackKind.CLAP);
+        int dugInFront = 0;
+        for (int y = 1; y <= 3; y++) {
+            for (int z = 2; z <= 6; z++) {
+                if (helper.getBlockState(new BlockPos(3, y, z)).isAir()) dugInFront++;
+                for (int x = 4; x <= 7; x++) {
+                    helper.assertTrue(!helper.getBlockState(new BlockPos(x, y, z)).isAir(), "Clap broke through obsidian at " + x + " " + y + " " + z);
+                }
+            }
+        }
+        helper.assertTrue(dugInFront > 0, "Clap did not touch the dirt in front of the obsidian");
+        helper.succeed();
+    }
+
     /** Solid stone from x = fromX to toX, 5 high and 5 wide around z = 4. */
     private static void stoneBlock(GameTestHelper helper, int fromX, int toX) {
         for (int x = fromX; x <= toX; x++) {

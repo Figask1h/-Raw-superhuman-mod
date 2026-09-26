@@ -2,24 +2,38 @@ package dev.ashu.rsm.attack;
 
 import dev.ashu.rsm.RsmConfig;
 
-/** The two super attacks of a Bearer. Numbers come from the (synced) server config. */
+/** The super attacks of a Bearer. Numbers come from the (synced) server config. */
 public enum AttackKind {
     /** Arc in front of the Bearer at sword reach: everything living in it takes the damage. */
     SLASH,
     /** Single target along the crosshair ray, heavy knockback. */
-    STRIKE;
+    STRIKE,
+    /** Directed blast along the look: ragged block destruction, damage and knockback in a cone. */
+    CLAP;
 
     public double damage() {
-        return this == SLASH ? RsmConfig.SLASH_DAMAGE.get() : RsmConfig.STRIKE_DAMAGE.get();
+        return switch (this) {
+            case SLASH -> RsmConfig.SLASH_DAMAGE.get();
+            case STRIKE -> RsmConfig.STRIKE_DAMAGE.get();
+            case CLAP -> RsmConfig.CLAP_DAMAGE.get();
+        };
     }
 
     public int cooldownTicks() {
-        double seconds = this == SLASH ? RsmConfig.SLASH_COOLDOWN.get() : RsmConfig.STRIKE_COOLDOWN.get();
+        double seconds = switch (this) {
+            case SLASH -> RsmConfig.SLASH_COOLDOWN.get();
+            case STRIKE -> RsmConfig.STRIKE_COOLDOWN.get();
+            case CLAP -> RsmConfig.CLAP_COOLDOWN.get();
+        };
         return (int) Math.round(seconds * 20.0);
     }
 
     public double range() {
-        return this == SLASH ? RsmConfig.SLASH_RANGE.get() : RsmConfig.STRIKE_RANGE.get();
+        return switch (this) {
+            case SLASH -> RsmConfig.SLASH_RANGE.get();
+            case STRIKE -> RsmConfig.STRIKE_RANGE.get();
+            case CLAP -> RsmConfig.CLAP_RANGE.get();
+        };
     }
 
     public static AttackKind byOrdinal(int ordinal) {

@@ -43,6 +43,9 @@ Hit blocks at 60 blocks/s or more (walls, hills, the ground) and you punch a rag
 ### Strike
 500 damage to the single target under your crosshair within 4 blocks, with a heavy knockback. 5 s cooldown, spent even on a miss. Mouse 5 by default.
 
+### Clap
+A directed blast along your look, aimed slightly down (G by default, 3 s cooldown). It tears a ragged crater up to about 8 blocks deep: soft blocks give way along the whole range, stone only 2-3 layers. Impervious blocks survive and shield everything behind them; claims are respected, and blocks drop like after an explosion. Everything living in the cone takes 50 damage and is thrown back.
+
 ### Space (Ad Astra)
 With **Ad Astra** installed, flying above the atmosphere-leave height (600 by default) opens the planet selection
 screen exactly like a rocket would — every planet available, no rocket, no fuel. You arrive at the top of the target
@@ -63,6 +66,7 @@ Speedometer left of the hotbar with a CRUISE marker; Slash, Strike and Dash icon
 | Cruise | sneak while boosting; sneak again to brake |
 | Slash | mouse button 4 |
 | Strike | mouse button 5 |
+| Clap | G |
 | Dash | Caps Lock |
 | Haste on/off | H |
 | Night Vision on/off | N |
@@ -91,7 +95,7 @@ The ring also has its own creative tab, or `/give @s rsm:ring`.
 
 ## Configuration
 
-- `<world>/serverconfig/rsm-server.toml` — speeds, thresholds, damage, cooldowns, dash, Breakthrough, block destruction. Synced to every client; defaults can go into `defaultconfigs/rsm-server.toml`.
+- `<world>/serverconfig/rsm-server.toml` — speeds, thresholds, damage, cooldowns, dash, Breakthrough, Clap, block destruction. Synced to every client; defaults can go into `defaultconfigs/rsm-server.toml`.
 - `config/rsm-client.toml` — FOV boost and HUD.
 - `config/rsm-common.toml` — `ringEnabled`: switch the ring off entirely (no recipe, no creative tab entry, existing rings do nothing). Applies to every world of the game or server and needs a restart; on a server, the server's value wins.
 - What counts as physical damage — the `rsm:physical` damage type tag (`data/rsm/tags/damage_type/physical.json`), editable with a datapack.
@@ -127,7 +131,7 @@ Heavily inspired by [Viltrumite](https://www.curseforge.com/minecraft/mc-mods/vi
 - **Защита** — физический урон поглощается на 99 %, всё остальное (огонь, лава, падение, удушение, холод, яд, магия, голод, кислород Ad Astra) не проходит вообще. `/kill` и бездна работают.
 - **Слэш** — 175 урона всем в дуге 120° на дистанции меча (сквозь стены не бьёт), перезарядка 0,5 с.
 - **Прямой** — 500 урона цели под прицелом до 4 блоков с сильным отбросом, перезарядка 5 с (уходит и при промахе).
-- **Космос** — с Ad Astra выше 600 открывается экран планет, все планеты доступны. В космосе и на планетах без воздуха дышишь без кислорода и не замерзаешь — скафандр не нужен.
+- **Хлопок** — направленный взрыв по взгляду с уклоном вниз (G, перезарядка 3 с): неровная воронка до ~8 блоков вглубь — мягкое разрушается на всю дальность, камень на 2–3 слоя. Непробиваемые блоки уцелевают и закрывают всё за собой, приваты соблюдаются, блоки выпадают как при взрыве. Всё живое в конусе получает 50 урона и отлетает.- **Космос** — с Ad Astra выше 600 открывается экран планет, все планеты доступны. В космосе и на планетах без воздуха дышишь без кислорода и не замерзаешь — скафандр не нужен.
 - **Спешка III и Ночное зрение** — пока кольцо надето; каждый эффект включается и выключается отдельно (H и N), выбор запоминается. Иконки справа от хотбара, выключенный эффект — бледный.
 
 ### Управление
@@ -139,6 +143,7 @@ Heavily inspired by [Viltrumite](https://www.curseforge.com/minecraft/mc-mods/vi
 | Круиз | приседание во время ускорения; ещё раз — снять |
 | Слэш | кнопка мыши 4 |
 | Прямой | кнопка мыши 5 |
+| Хлопок | G |
 | Дэш | Caps Lock |
 | Спешка вкл/выкл | H |
 | Ночное зрение вкл/выкл | N |
@@ -153,7 +158,7 @@ Heavily inspired by [Viltrumite](https://www.curseforge.com/minecraft/mc-mods/vi
 
 ### Настройка
 
-- `<мир>/serverconfig/rsm-server.toml` — скорости, пороги, урон, перезарядки, дэш, Пробивание, разрушение блоков (синхронизируется клиентам).
+- `<мир>/serverconfig/rsm-server.toml` — скорости, пороги, урон, перезарядки, дэш, Пробивание, Хлопок, разрушение блоков (синхронизируется клиентам).
 - `config/rsm-client.toml` — FOV и HUD.
 - `config/rsm-common.toml` — `ringEnabled`: полностью выключить кольцо (нет рецепта и вкладки, существующие кольца ничего не дают). Действует на все миры игры или сервера, нужен перезапуск; на сервере решает его значение.
 - Тег `rsm:physical` — что считать физическим уроном, правится датапаком.
