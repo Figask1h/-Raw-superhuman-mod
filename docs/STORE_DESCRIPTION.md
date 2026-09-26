@@ -14,8 +14,7 @@
 - Creative-style flight (double-jump), plus a **Boost**: hold sprint + forward and you accelerate along your camera up to **150 blocks/s** in seven seconds. Elytra pose, wind, growing field of view — the works.
 - **Cruise control**: sneak while boosting to lock your speed, then let go of everything and just steer with the mouse. Sneak again to brake.
 - **Dash** (Caps Lock): an 8-block burst on foot, an instant speed kick in the air.
-- Brush a wall or the ground at a shallow angle and you slide along it instead of stopping.
-- **Breakthrough**: hit blocks head-on at 60+ b/s and you tunnel straight through them. Obsidian-grade blocks, bedrock and chests stop you; claims are respected.
+- **Breakthrough**: hit blocks at 60+ b/s and you tunnel straight through them. Obsidian-grade blocks, bedrock and chests stop you; claims are respected.
 
 ### Defense
 - Physical damage — melee, arrows, explosions, falling anvils — is absorbed by **93 %**.
@@ -52,8 +51,7 @@ Heavily inspired by [Viltrumite](https://www.curseforge.com/minecraft/mc-mods/vi
 - Полёт как в креативе (двойной прыжок) плюс **Ускорение**: зажми бег + вперёд и разгоняйся по направлению взгляда до **150 блоков/с** за семь секунд. Поза элитры, свист ветра, растущий FOV.
 - **Круиз**: присядь во время разгона — скорость зафиксирована, отпускай всё и рули мышью. Присел ещё раз — тормозишь.
 - **Дэш** (Caps Lock): рывок на 8 блоков на земле, мгновенная прибавка скорости в воздухе.
-- Задел стену или землю по касательной — скользишь вдоль, а не останавливаешься.
-- **Пробивание**: влетел в блоки в лоб на 60+ б/с — пробиваешь туннель насквозь. Обсидиан и всё столь же прочное, бедрок и сундуки останавливают; приваты соблюдаются.
+- **Пробивание**: врезался в блоки на 60+ б/с — пробиваешь туннель насквозь. Обсидиан и всё столь же прочное, бедрок и сундуки останавливают; приваты соблюдаются.
 
 ### Защита
 - Физический урон — удары, стрелы, взрывы, наковальни — поглощается на **93 %**.

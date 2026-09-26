@@ -19,9 +19,6 @@ public final class RsmConfig {
     public static final ModConfigSpec.DoubleValue TURN_LOSS_MIN_ANGLE;
     public static final ModConfigSpec.DoubleValue TURN_SPEED_LOSS;
 
-    // --- Collisions ---
-    public static final ModConfigSpec.DoubleValue SLIDE_MAX_ANGLE;
-
     // --- Block destruction (Breakthrough, Clap) ---
     public static final ModConfigSpec.BooleanValue DESTROY_BLOCKS;
     public static final ModConfigSpec.DoubleValue BREAKTHROUGH_MIN_SPEED;
@@ -80,11 +77,6 @@ public final class RsmConfig {
         b.push("breakthrough");
         BREAKTHROUGH_MIN_SPEED = b.comment("Flying head-on into blocks at this speed (blocks/second) or faster tunnels through them instead of stopping.")
             .defineInRange("minSpeed", 60.0, 0.0, 1000.0);
-        b.pop();
-
-        b.push("collisions");
-        SLIDE_MAX_ANGLE = b.comment("Hitting a block at an angle (degrees between flight direction and surface) up to this slides along it instead of stopping.")
-            .defineInRange("slideMaxAngle", 30.0, 0.0, 90.0);
         b.pop();
 
         b.push("dash");
