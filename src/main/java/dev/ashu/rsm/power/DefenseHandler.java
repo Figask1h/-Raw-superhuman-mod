@@ -32,7 +32,7 @@ public final class DefenseHandler {
         }
     }
 
-    /** Runs after armor, enchantments and absorption: the 93% applies to what would actually be taken. */
+    /** Runs after armor, enchantments and absorption: the 99% applies to what would actually be taken. */
     @SubscribeEvent
     static void onDamagePre(LivingDamageEvent.Pre event) {
         if (!Bearer.isBearer(event.getEntity())) return;

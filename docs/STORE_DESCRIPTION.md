@@ -17,7 +17,7 @@
 - **Breakthrough**: hit blocks at 60+ b/s and you tunnel straight through them. Obsidian-grade blocks, bedrock and chests stop you; claims are respected.
 
 ### Defense
-- Physical damage — melee, arrows, explosions, falling anvils — is absorbed by **93 %**.
+- Physical damage — melee, arrows, explosions, falling anvils — is absorbed by **99 %**.
 - Everything else does **nothing**: fire, lava, fall damage, drowning, suffocation, freezing, poison, wither, magic, starvation, lightning, dragon breath. Harmful potions still apply their effects, they just cannot hurt you.
 - `/kill` and the void still work, so you cannot get stuck.
 
@@ -54,7 +54,7 @@ Heavily inspired by [Viltrumite](https://www.curseforge.com/minecraft/mc-mods/vi
 - **Пробивание**: врезался в блоки на 60+ б/с — пробиваешь туннель насквозь. Обсидиан и всё столь же прочное, бедрок и сундуки останавливают; приваты соблюдаются.
 
 ### Защита
-- Физический урон — удары, стрелы, взрывы, наковальни — поглощается на **93 %**.
+- Физический урон — удары, стрелы, взрывы, наковальни — поглощается на **99 %**.
 - Всё остальное **не работает**: огонь, лава, падение, утопление, удушение, холод, яд, иссушение, магия, голод, молния, дыхание дракона. Вредные зелья накладываются, но урона не наносят.
 - `/kill` и бездна работают — застрять невозможно.
 

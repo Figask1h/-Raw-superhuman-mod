@@ -88,8 +88,8 @@ public final class RsmConfig {
         b.pop();
 
         b.push("defense");
-        PHYSICAL_DAMAGE_MULTIPLIER = b.comment("Fraction of physical damage the bearer actually takes (0.07 = 93% absorbed). Non-physical damage is always nullified.")
-            .defineInRange("physicalDamageMultiplier", 0.07, 0.0, 1.0);
+        PHYSICAL_DAMAGE_MULTIPLIER = b.comment("Fraction of physical damage the bearer actually takes (0.01 = 99% absorbed). Non-physical damage is always nullified.")
+            .defineInRange("physicalDamageMultiplier", 0.01, 0.0, 1.0);
         b.pop();
 
         b.push("slash");

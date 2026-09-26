@@ -33,7 +33,7 @@ hovering; standing still dashes forward). About 8 blocks on foot or in hover; in
 Hit blocks at 60 blocks/s or more (walls, hills, the ground) and you punch a ragged tunnel about three blocks wide straight through them, without slowing down. Nothing drops. **Impervious** blocks stop you dead: obsidian and anything as blast-resistant (anvils, enchanting tables, ancient debris...), bedrock, and anything holding items (chests, furnaces, shulker boxes, modded storage). Claims and spawn protection are respected, `blocks.destroyBlocks = false` in the server config turns destruction off, and datapacks can adjust the rules with the `rsm:impervious` and `rsm:breakable` block tags. Slower than 60 b/s, any block you hit stops you and drops you to hover.
 
 ### Defense
-- **Physical** damage — melee, arrows, tridents, projectiles, explosions, thorns, stings, sonic boom, falling blocks, cactus — is absorbed by **93 %** (after armor).
+- **Physical** damage — melee, arrows, tridents, projectiles, explosions, thorns, stings, sonic boom, falling blocks, cactus — is absorbed by **99 %** (after armor).
 - **Everything else does nothing**: fire, lava, fall damage, drowning, suffocation, freezing, poison, wither, magic and potions, starvation, cramming, lightning, dragon breath, Ad Astra oxygen and temperature. Harmful effects still apply, they just cannot hurt you.
 - `/kill` and the void always work, so you can never get stuck.
 
@@ -124,7 +124,7 @@ Heavily inspired by [Viltrumite](https://www.curseforge.com/minecraft/mc-mods/vi
 - **Круиз** — присел во время разгона: скорость зафиксирована, отпускай все клавиши и рули мышью; потерянная на повороте скорость добирается сама. Присел ещё раз — тормозишь.
 - **Дэш** — рывок по направлению движения (WASD, в зависании ещё вверх/вниз, стоя — вперёд): ~8 блоков на земле, в быстром полёте — +40 б/с по курсу. Перезарядка 1,5 с.
 - **Пробивание** — врезался в блоки (стену, холм, землю) на 60+ б/с — пробиваешь неровный туннель шириной около 3 блоков, не теряя скорости; предметы не выпадают. **Непробиваемые** блоки останавливают намертво: обсидиан и всё столь же взрывостойкое (наковальни, стол зачарований, древние обломки), бедрок и всё, где лежат предметы (сундуки, печи, шалкеры). Приваты и защита спавна соблюдаются; `blocks.destroyBlocks = false` в серверном конфиге выключает разрушение; теги `rsm:impervious` и `rsm:breakable` правятся датапаком. Медленнее 60 б/с любой блок останавливает и переводит в Зависание.
-- **Защита** — физический урон поглощается на 93 %, всё остальное (огонь, лава, падение, удушение, холод, яд, магия, голод, кислород Ad Astra) не проходит вообще. `/kill` и бездна работают.
+- **Защита** — физический урон поглощается на 99 %, всё остальное (огонь, лава, падение, удушение, холод, яд, магия, голод, кислород Ad Astra) не проходит вообще. `/kill` и бездна работают.
 - **Слэш** — 175 урона всем в дуге 120° на дистанции меча (сквозь стены не бьёт), перезарядка 0,5 с.
 - **Прямой** — 500 урона цели под прицелом до 4 блоков с сильным отбросом, перезарядка 5 с (уходит и при промахе).
 - **Космос** — с Ad Astra выше 600 открывается экран планет, все планеты доступны.
