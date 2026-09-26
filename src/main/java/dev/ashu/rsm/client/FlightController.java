@@ -220,6 +220,9 @@ public final class FlightController {
             player.level().setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
         }
         PacketDistributor.sendToServer(new BreakthroughPayload(tunnel));
+        // Hitting the floor set onGround, and vanilla ends creative flight for a flying player on the ground
+        // right after travel (LocalPlayer.aiStep). The floor is gone now, so we are not on it.
+        player.setOnGround(false);
         return true;
     }
 
