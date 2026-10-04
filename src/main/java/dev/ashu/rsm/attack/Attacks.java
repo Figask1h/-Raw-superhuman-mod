@@ -1,6 +1,8 @@
 package dev.ashu.rsm.attack;
 
 import dev.ashu.rsm.RsmConfig;
+import dev.ashu.rsm.grab.Grabs;
+import dev.ashu.rsm.network.ClapPayload;
 import dev.ashu.rsm.power.Bearer;
 import dev.ashu.rsm.registry.ModAttachments;
 import net.minecraft.core.particles.ParticleTypes;
@@ -21,18 +23,27 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 /** Server-side execution of Slash, Strike and Clap. The client only asks; the server checks Bearer status and cooldowns. */
 public final class Attacks {
 
     public static void perform(ServerPlayer player, AttackKind kind) {
         if (!Bearer.isBearer(player) || player.isSpectator() || !player.isAlive()) return;
+        // Both hands are needed for a Clap, and one of them is holding a Captive.
+        if (kind == AttackKind.CLAP && Grabs.isHolding(player)) return;
         AttackCooldowns cooldowns = player.getData(ModAttachments.ATTACKS);
         if (!cooldowns.isReady(kind, player.tickCount)) return;
         cooldowns.trigger(kind, player.tickCount, kind.cooldownTicks());
+        // A Captive Bearer's attack throws the Holder off instead of hitting anything.
+        if (Grabs.counter(player)) return;
 
-        // The client already swung its own arm; only other players need the animation.
-        player.swing(InteractionHand.MAIN_HAND, false);
+        // The client already animated its own player; only other players need to see it.
+        if (kind == AttackKind.CLAP) {
+            PacketDistributor.sendToPlayersTrackingEntity(player, new ClapPayload(player.getId()));
+        } else {
+            player.swing(InteractionHand.MAIN_HAND, false);
+        }
         switch (kind) {
             case SLASH -> slash(player);
             case STRIKE -> strike(player);
@@ -84,11 +95,20 @@ public final class Attacks {
         EntityHitResult entityHit = ProjectileUtil.getEntityHitResult(player, eye, end, searchBox,
             entity -> entity instanceof LivingEntity living && canTarget(player, living), range * range);
 
+        // The trail runs along the whole reach, up to the first wall.
+        AttackEffects.sonicTrail(level, eye, look, eye.distanceTo(end));
+        AttackEffects.shakeAttacker(player, AttackKind.STRIKE);
         if (entityHit != null && entityHit.getEntity() instanceof LivingEntity target) {
-            target.hurt(player.damageSources().playerAttack(player), (float) AttackKind.STRIKE.damage());
-            target.knockback(RsmConfig.STRIKE_KNOCKBACK.get(), -look.x, -look.z);
-            target.setDeltaMovement(target.getDeltaMovement().add(0.0, 0.3, 0.0));
-            target.hurtMarked = true;
+            AttackEffects.flash(level, entityHit.getLocation());
+            if (target.hurt(player.damageSources().playerAttack(player), (float) AttackKind.STRIKE.damage())) {
+                AttackEffects.shakeHit(target, AttackKind.STRIKE);
+            }
+            // A Captive stays in the Holder's hand: it takes the damage but not the knockback.
+            if (!Grabs.isCaptive(target)) {
+                target.knockback(RsmConfig.STRIKE_KNOCKBACK.get(), -look.x, -look.z);
+                target.setDeltaMovement(target.getDeltaMovement().add(0.0, 0.3, 0.0));
+                target.hurtMarked = true;
+            }
             level.sendParticles(ParticleTypes.CRIT, target.getX(), target.getY(0.5), target.getZ(), 16, 0.3, 0.3, 0.3, 0.3);
             level.playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.PLAYER_ATTACK_CRIT, SoundSource.PLAYERS, 1.0F, 0.8F);
             level.playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.PLAYER_ATTACK_KNOCKBACK, SoundSource.PLAYERS, 1.0F, 0.7F);
@@ -104,7 +124,7 @@ public final class Attacks {
     }
 
     /** Walls stop the Slash: some part of the target (nearest point, centre or eyes) must be in plain view. */
-    static boolean isVisible(ServerLevel level, ServerPlayer player, Vec3 eye, LivingEntity target, Vec3 closest) {
+    public static boolean isVisible(ServerLevel level, ServerPlayer player, Vec3 eye, LivingEntity target, Vec3 closest) {
         for (Vec3 point : new Vec3[] {closest, target.getBoundingBox().getCenter(), target.getEyePosition()}) {
             ClipContext ray = new ClipContext(eye, point, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player);
             if (level.clip(ray).getType() == HitResult.Type.MISS) return true;
@@ -112,7 +132,7 @@ public final class Attacks {
         return false;
     }
 
-    static Vec3 closestPoint(AABB box, Vec3 point) {
+    public static Vec3 closestPoint(AABB box, Vec3 point) {
         return new Vec3(
             Mth.clamp(point.x, box.minX, box.maxX),
             Mth.clamp(point.y, box.minY, box.maxY),

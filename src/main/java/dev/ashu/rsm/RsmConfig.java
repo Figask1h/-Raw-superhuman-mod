@@ -23,6 +23,9 @@ public final class RsmConfig {
     public static final ModConfigSpec.BooleanValue DESTROY_BLOCKS;
     public static final ModConfigSpec.DoubleValue BREAKTHROUGH_MIN_SPEED;
 
+    // --- Incandescence ---
+    public static final ModConfigSpec.DoubleValue INCANDESCENCE_MIN_SPEED;
+
     // --- Dash ---
     public static final ModConfigSpec.DoubleValue DASH_DISTANCE;
     public static final ModConfigSpec.DoubleValue DASH_COOLDOWN;
@@ -48,6 +51,15 @@ public final class RsmConfig {
     public static final ModConfigSpec.DoubleValue CLAP_POWER;
     public static final ModConfigSpec.DoubleValue CLAP_KNOCKBACK;
 
+    // --- Grab ---
+    public static final ModConfigSpec.DoubleValue GRAB_RANGE;
+    public static final ModConfigSpec.DoubleValue GRAB_MAX_HEALTH;
+    public static final ModConfigSpec.BooleanValue GRAB_PLAYERS;
+    public static final ModConfigSpec.DoubleValue THROW_SPEED;
+    public static final ModConfigSpec.DoubleValue THROW_IMPACT_DAMAGE;
+    public static final ModConfigSpec.IntValue BREAK_FREE_JUMPS;
+    public static final ModConfigSpec.IntValue BREAK_FREE_JUMPS_BEARER;
+
     // --- Space (Ad Astra) ---
     public static final ModConfigSpec.BooleanValue SPACE_ENABLED;
 
@@ -57,6 +69,7 @@ public final class RsmConfig {
     // --- Client ---
     public static final ModConfigSpec.DoubleValue FOV_BOOST_DEGREES;
     public static final ModConfigSpec.BooleanValue SHOW_HUD;
+    public static final ModConfigSpec.BooleanValue SCREEN_SHAKE;
 
     static {
         ModConfigSpec.Builder b = new ModConfigSpec.Builder();
@@ -84,6 +97,11 @@ public final class RsmConfig {
         b.push("breakthrough");
         BREAKTHROUGH_MIN_SPEED = b.comment("Flying head-on into blocks at this speed (blocks/second) or faster tunnels through them instead of stopping.")
             .defineInRange("minSpeed", 60.0, 0.0, 1000.0);
+        b.pop();
+
+        b.push("incandescence");
+        INCANDESCENCE_MIN_SPEED = b.comment("The front of a flying bearer starts glowing like heated metal at this speed (blocks/second), brightest at maxSpeed. Purely visual.")
+            .defineInRange("minSpeed", 100.0, 0.0, 1000.0);
         b.pop();
 
         b.push("dash");
@@ -129,6 +147,23 @@ public final class RsmConfig {
             .defineInRange("knockback", 2.0, 0.0, 20.0);
         b.pop();
 
+        b.push("grab");
+        GRAB_RANGE = b.comment("How far the bearer can reach to grab what is under the crosshair, blocks.")
+            .defineInRange("range", 4.0, 0.5, 16.0);
+        GRAB_MAX_HEALTH = b.comment("Only creatures with at most this much max health can be grabbed. Entity type tag rsm:ungrabbable excludes more (ender dragon, armor stands).")
+            .defineInRange("maxHealth", 500.0, 1.0, 100000.0);
+        GRAB_PLAYERS = b.comment("Whether players can be grabbed (never in creative or spectator).")
+            .define("players", false);
+        THROW_SPEED = b.comment("Speed of a throw along the look, blocks/second; the bearer's own flight speed is added. The captive flies straight for 2 seconds, then falls.")
+            .defineInRange("throwSpeed", 60.0, 0.0, 1000.0);
+        THROW_IMPACT_DAMAGE = b.comment("Damage when a thrown captive first hits a block (8 = 4 hearts); fall damage comes on top. Physical: a thrown bearer takes 1%.")
+            .defineInRange("throwImpactDamage", 8.0, 0.0, 10000.0);
+        BREAK_FREE_JUMPS = b.comment("Jumps within 3 seconds a grabbed player needs to break free.")
+            .defineInRange("breakFreeJumps", 10, 1, 100);
+        BREAK_FREE_JUMPS_BEARER = b.comment("The same for a grabbed bearer.")
+            .defineInRange("breakFreeJumpsBearer", 3, 1, 100);
+        b.pop();
+
         b.push("space");
         SPACE_ENABLED = b.comment("Open the Ad Astra planet selection when flying above the atmosphere. Requires Ad Astra.")
             .define("enabled", true);
@@ -138,9 +173,11 @@ public final class RsmConfig {
 
         ModConfigSpec.Builder c = new ModConfigSpec.Builder();
         c.push("client");
-        FOV_BOOST_DEGREES = c.comment("Extra field of view (degrees) at maxSpeed; scales linearly with speed.")
-            .defineInRange("fovBoostDegrees", 30.0, 0.0, 90.0);
+        FOV_BOOST_DEGREES = c.comment("Extra field of view (degrees) at maxSpeed. Grows quickly at first, then steps up as speed crosses the Barrier (breakthrough minSpeed).")
+            .defineInRange("fovBoostDegrees", 40.0, 0.0, 90.0);
         SHOW_HUD = c.comment("Show speed / cruise / attack cooldown overlay.").define("showHud", true);
+        SCREEN_SHAKE = c.comment("Shake the camera when you use a Strike or a Clap and when one hits you. Also scaled by the vanilla Distortion Effects slider.")
+            .define("screenShake", true);
         c.pop();
         CLIENT_SPEC = c.build();
 

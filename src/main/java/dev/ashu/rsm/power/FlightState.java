@@ -18,6 +18,10 @@ public final class FlightState {
      * it re-arms only after descending well below it, so closing the planet screen does not reopen it.
      */
     public boolean ascentArmed = true;
+    /** The Barrier burst fires once when Speed reaches it, then waits until Speed has dropped well below. */
+    public boolean barrierArmed = true;
+    /** Incandescence heat (0-255) the watching players were last told; changes are sent, repeats are not. */
+    public int incandescence;
     /** Player tick count of the last dash shown to other players; throttles clients that spam dash packets. */
     public int lastDashTick = Integer.MIN_VALUE / 2;
 
@@ -29,5 +33,6 @@ public final class FlightState {
         mode = FlightMode.HOVER;
         speed = 0.0;
         direction = Vec3.ZERO;
+        barrierArmed = true;
     }
 }

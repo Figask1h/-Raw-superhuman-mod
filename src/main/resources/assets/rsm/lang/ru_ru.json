@@ -9,6 +9,12 @@
   "key.rsm.dash": "Дэш",
   "key.rsm.toggle_haste": "Спешка вкл/выкл",
   "key.rsm.toggle_night_vision": "Ночное зрение вкл/выкл",
+  "key.rsm.toggle_regeneration": "Регенерация вкл/выкл",
+  "key.rsm.toggle_strength": "Сила вкл/выкл",
+  "key.rsm.grab": "Захват (зажать — бросок)",
+  "key.rsm.release": "Отпустить",
+  "death.attack.rsm.slammed": "%1$s был впечатан в стену игроком %2$s",
+  "death.attack.rsm.slammed.item": "%1$s был впечатан в стену игроком %2$s с помощью %3$s",
   "rsm.hud.speed": "%s б/с",
   "rsm.hud.cruise": "КРУИЗ",
   "itemGroup.rsm": "Raw superhuman mod"

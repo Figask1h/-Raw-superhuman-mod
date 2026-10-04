@@ -1,6 +1,7 @@
 package dev.ashu.rsm.power;
 
 import dev.ashu.rsm.RsmConfig;
+import dev.ashu.rsm.grab.Grabs;
 import dev.ashu.rsm.registry.ModAttachments;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
@@ -107,6 +108,7 @@ public final class Breakthrough {
             if (broken++ % EFFECT_EVERY == 0) level.levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, pos, Block.getId(state));
             level.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
         }
+        if (broken > 0) Grabs.markTunnelled(player);
     }
 
     private Breakthrough() {}

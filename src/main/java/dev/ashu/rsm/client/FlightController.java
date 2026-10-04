@@ -1,6 +1,7 @@
 package dev.ashu.rsm.client;
 
 import dev.ashu.rsm.RsmConfig;
+import dev.ashu.rsm.grab.GrabPose;
 import dev.ashu.rsm.network.BreakthroughPayload;
 import dev.ashu.rsm.network.FlightStatePayload;
 import dev.ashu.rsm.power.Bearer;
@@ -12,6 +13,7 @@ import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.block.Block;
@@ -56,6 +58,11 @@ public final class FlightController {
         return mode.isFast();
     }
 
+    /** Unit flight direction in fast flight. */
+    public Vec3 direction() {
+        return direction;
+    }
+
     /** 0 at hover speed, 1 at max speed. */
     public double speedFraction() {
         double max = RsmConfig.MAX_SPEED.get();
@@ -81,7 +88,7 @@ public final class FlightController {
         sneakWasDown = sneakDown;
 
         boolean canFly = player.getAbilities().flying && !player.isPassenger() && !player.isSpectator()
-            && !player.isSleeping() && Bearer.isBearer(player);
+            && !player.isSleeping() && Bearer.isBearer(player) && !ClientGrabs.isCaptive(player.getId());
         if (!canFly) {
             if (isFast()) toHover(player);
             return;
@@ -190,6 +197,7 @@ public final class FlightController {
     /** Called from the Player.travel mixin for the local player. Returns true when vanilla travel must be skipped. */
     public boolean travel(LocalPlayer player) {
         if (!isFast()) return false;
+        if (Breakthrough.isFastEnough(speed)) clearRamPath(player);
         Vec3 velocity = direction.scale(speed / 20.0);
         player.setDeltaMovement(velocity);
         player.move(MoverType.SELF, velocity);
@@ -226,6 +234,23 @@ public final class FlightController {
         return true;
     }
 
+    /**
+     * A Captive held ahead is a ram: its path is tunnelled before it gets there, as far ahead as it reaches, so it
+     * never ploughs through solid rock while the Holder behind it still flies in the open.
+     */
+    private void clearRamPath(LocalPlayer player) {
+        Integer captiveId = ClientGrabs.captiveOf(player.getId());
+        Entity captive = captiveId != null ? player.level().getEntity(captiveId) : null;
+        if (captive == null) return;
+        Vec3 center = player.position().add(0.0, player.getBbHeight() / 2.0, 0.0);
+        List<BlockPos> tunnel = Breakthrough.tunnel(player.level(), center, direction, speed / 20.0 + 1.5 + GrabPose.ramReach(captive));
+        if (tunnel.isEmpty()) return;
+        for (BlockPos pos : tunnel) {
+            player.level().setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
+        }
+        PacketDistributor.sendToServer(new BreakthroughPayload(tunnel));
+    }
+
     /** Dash while in fast flight: a burst of speed along the current travel direction (cruise remembers it). */
     public void dashInFlight(LocalPlayer player) {
         speed = Math.min(RsmConfig.MAX_SPEED.get(), speed + RsmConfig.DASH_FLIGHT_BOOST.get());
@@ -243,6 +268,11 @@ public final class FlightController {
         } else if (player.getForcedPose() == Pose.FALL_FLYING) {
             player.setForcedPose(null);
         }
+    }
+
+    /** Thrown off by a counterattack: back to hover at once, so the push is not overridden by fast flight. */
+    public void stopFastFlight(LocalPlayer player) {
+        if (isFast()) toHover(player);
     }
 
     private void toHover(LocalPlayer player) {

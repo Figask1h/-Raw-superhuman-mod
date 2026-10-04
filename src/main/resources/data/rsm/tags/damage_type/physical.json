@@ -25,6 +25,7 @@
     "minecraft:stalagmite",
     "minecraft:cactus",
     "minecraft:sweet_berry_bush",
+    "rsm:slammed",
     { "id": "ad_astra:ran_over", "required": false }
   ]
 }

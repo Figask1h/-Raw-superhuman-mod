@@ -38,6 +38,7 @@ public final class FlightServerHandler {
         } else if (player.getForcedPose() == Pose.FALL_FLYING) {
             player.setForcedPose(null);
         }
+        Incandescence.sync(player, state);
     }
 
     private FlightServerHandler() {}

@@ -16,7 +16,14 @@ import net.minecraft.world.entity.LivingEntity;
 public enum PassiveEffect implements StringRepresentable {
     HASTE("haste", MobEffects.DIG_SPEED, 2, 60, 20),
     /** Vanilla starts flashing night vision below 200 ticks left, so keep it comfortably above that. */
-    NIGHT_VISION("night_vision", MobEffects.NIGHT_VISION, 0, 400, 240);
+    NIGHT_VISION("night_vision", MobEffects.NIGHT_VISION, 0, 400, 240),
+    /**
+     * Regeneration I heals whenever its remaining duration is a multiple of 50 ticks. A refresh cycle of
+     * exactly 100 ticks passes two such points, so the ring heals at the vanilla rate of 1 HP per 2.5 s.
+     */
+    REGENERATION("regeneration", MobEffects.REGENERATION, 0, 320, 220),
+    /** Strength II: ordinary melee only. Slash, Strike and Clap deal fixed damage and ignore it. */
+    STRENGTH("strength", MobEffects.DAMAGE_BOOST, 1, 400, 240);
 
     public static final Codec<PassiveEffect> CODEC = StringRepresentable.fromEnum(PassiveEffect::values);
 

@@ -12,7 +12,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
@@ -22,6 +24,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.HashMap;
@@ -52,8 +56,13 @@ final class Clap {
         double range = AttackKind.CLAP.range();
         double halfCone = Math.toRadians(RsmConfig.CLAP_CONE_DEGREES.get() / 2.0);
 
+        // Before the blast, which may remove the very block the flash belongs on.
+        Vec3 impact = impactPoint(player, level, eye, aim, range);
         if (RsmConfig.DESTROY_BLOCKS.get()) blast(player, level, eye, aim, range, halfCone);
         hitLiving(player, level, eye, aim, range, halfCone);
+        AttackEffects.sonicTrail(level, eye, aim, range);
+        AttackEffects.flash(level, impact);
+        AttackEffects.shakeAttacker(player, AttackKind.CLAP);
 
         level.playSound(null, eye.x, eye.y, eye.z, SoundEvents.GENERIC_EXPLODE.value(), SoundSource.PLAYERS, 1.5F, 1.4F);
         level.playSound(null, eye.x, eye.y, eye.z, SoundEvents.PLAYER_ATTACK_KNOCKBACK, SoundSource.PLAYERS, 1.0F, 0.6F);
@@ -121,12 +130,22 @@ final class Clap {
             if (toTarget.lengthSqr() > range * range) continue;
             if (toTarget.lengthSqr() > 1.0E-4 && Attacks.angleBetween(aim, toTarget) > halfCone) continue;
             if (!Attacks.isVisible(level, player, eye, target, closest)) continue;
-            target.hurt(source, damage);
+            if (target.hurt(source, damage)) AttackEffects.shakeHit(target, AttackKind.CLAP);
             Vec3 away = target.position().subtract(player.position());
             target.knockback(knockback, -away.x, -away.z);
             target.setDeltaMovement(target.getDeltaMovement().add(0.0, 0.3, 0.0));
             target.hurtMarked = true;
         }
+    }
+
+    /** Where the blast's axis first meets something: a living target, else a block, else the end of its reach. */
+    private static Vec3 impactPoint(ServerPlayer player, ServerLevel level, Vec3 eye, Vec3 aim, double range) {
+        Vec3 end = eye.add(aim.scale(range));
+        HitResult blockHit = level.clip(new ClipContext(eye, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
+        if (blockHit.getType() != HitResult.Type.MISS) end = blockHit.getLocation();
+        EntityHitResult entityHit = ProjectileUtil.getEntityHitResult(player, eye, end, new AABB(eye, end).inflate(1.0),
+            entity -> entity instanceof LivingEntity living && Attacks.canTarget(player, living), eye.distanceToSqr(end));
+        return entityHit != null ? entityHit.getLocation() : end;
     }
 
     private Clap() {}

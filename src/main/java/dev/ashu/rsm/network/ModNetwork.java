@@ -3,13 +3,20 @@ package dev.ashu.rsm.network;
 import dev.ashu.rsm.RawSuperhumanMod;
 import dev.ashu.rsm.RsmConfig;
 import dev.ashu.rsm.attack.Attacks;
+import dev.ashu.rsm.client.ClapAnimation;
+import dev.ashu.rsm.client.ClientGrabs;
 import dev.ashu.rsm.client.ClientPassives;
+import dev.ashu.rsm.client.IncandescenceGlow;
+import dev.ashu.rsm.client.ScreenShake;
+import dev.ashu.rsm.grab.Grabs;
 import dev.ashu.rsm.item.ToggleableItem;
+import dev.ashu.rsm.power.Barrier;
 import dev.ashu.rsm.power.Bearer;
 import dev.ashu.rsm.power.Breakthrough;
 import dev.ashu.rsm.power.DashEffects;
 import dev.ashu.rsm.power.FlightMode;
 import dev.ashu.rsm.power.FlightState;
+import dev.ashu.rsm.power.Incandescence;
 import dev.ashu.rsm.power.PassiveEffectsHandler;
 import dev.ashu.rsm.registry.ModAttachments;
 import net.minecraft.server.level.ServerPlayer;
@@ -26,18 +33,31 @@ public final class ModNetwork {
 
     @SubscribeEvent
     static void register(RegisterPayloadHandlersEvent event) {
-        // Bump when payloads change: a 0.2 client and a 0.3 server must refuse each other.
-        PayloadRegistrar registrar = event.registrar("2");
+        // Bump when payloads change, so clients and servers of different versions refuse each other.
+        PayloadRegistrar registrar = event.registrar("3");
         registrar.playToServer(FlightStatePayload.TYPE, FlightStatePayload.STREAM_CODEC, ModNetwork::handleFlightState);
         registrar.playToServer(AttackPayload.TYPE, AttackPayload.STREAM_CODEC, ModNetwork::handleAttack);
         registrar.playToServer(DashPayload.TYPE, DashPayload.STREAM_CODEC, ModNetwork::handleDash);
         registrar.playToServer(TogglePassivePayload.TYPE, TogglePassivePayload.STREAM_CODEC, ModNetwork::handleTogglePassive);
         registrar.playToServer(BreakthroughPayload.TYPE, BreakthroughPayload.STREAM_CODEC, ModNetwork::handleBreakthrough);
+        registrar.playToServer(GrabActionPayload.TYPE, GrabActionPayload.STREAM_CODEC, ModNetwork::handleGrabAction);
         // A lambda, so the client-side target class is only resolved when a packet actually arrives on a client.
         registrar.playToClient(PassiveEffectsPayload.TYPE, PassiveEffectsPayload.STREAM_CODEC,
             (payload, context) -> ClientPassives.set(payload.disabledMask()));
         registrar.playToClient(EnabledItemsPayload.TYPE, EnabledItemsPayload.STREAM_CODEC,
             (payload, context) -> ToggleableItem.setSynced(payload.disabledMask()));
+        registrar.playToClient(ScreenShakePayload.TYPE, ScreenShakePayload.STREAM_CODEC,
+            (payload, context) -> ScreenShake.start(payload.degrees(), payload.ticks()));
+        registrar.playToClient(ClapPayload.TYPE, ClapPayload.STREAM_CODEC,
+            (payload, context) -> ClapAnimation.start(payload.entityId()));
+        registrar.playToClient(IncandescencePayload.TYPE, IncandescencePayload.STREAM_CODEC,
+            (payload, context) -> IncandescenceGlow.setTarget(payload.entityId(), payload.heat() / (float) Incandescence.LEVELS));
+        registrar.playToClient(GrabStatePayload.TYPE, GrabStatePayload.STREAM_CODEC,
+            (payload, context) -> ClientGrabs.set(payload.holderId(), payload.captiveId()));
+        registrar.playToClient(StrugglePayload.TYPE, StrugglePayload.STREAM_CODEC,
+            (payload, context) -> ClientGrabs.struggled(payload.captiveId()));
+        registrar.playToClient(PushPayload.TYPE, PushPayload.STREAM_CODEC,
+            (payload, context) -> ClientGrabs.push(payload.x(), payload.y(), payload.z()));
     }
 
     /** Runs on the server main thread. The client is authoritative for movement; the server only sanity-checks. */
@@ -45,7 +65,7 @@ public final class ModNetwork {
         if (!(context.player() instanceof ServerPlayer player)) return;
         FlightState state = player.getData(ModAttachments.FLIGHT);
 
-        boolean allowed = payload.mode().isFast() && Bearer.isBearer(player) && player.getAbilities().flying;
+        boolean allowed = payload.mode().isFast() && Bearer.isBearer(player) && player.getAbilities().flying && !Grabs.isCaptive(player);
         if (!allowed) {
             state.reset();
             return;
@@ -56,6 +76,7 @@ public final class ModNetwork {
         Vec3 direction = payload.direction();
         state.direction = direction.lengthSqr() > 1.0E-6 ? direction.normalize() : player.getLookAngle();
         state.lastUpdateTick = player.tickCount;
+        Barrier.track(player, state);
     }
 
     private static void handleAttack(AttackPayload payload, IPayloadContext context) {
@@ -79,6 +100,16 @@ public final class ModNetwork {
     private static void handleBreakthrough(BreakthroughPayload payload, IPayloadContext context) {
         if (context.player() instanceof ServerPlayer player) {
             Breakthrough.breakOnServer(player, payload.positions());
+        }
+    }
+
+    private static void handleGrabAction(GrabActionPayload payload, IPayloadContext context) {
+        if (!(context.player() instanceof ServerPlayer player)) return;
+        switch (payload.action()) {
+            case GRAB -> Grabs.tryGrab(player, payload.targetId());
+            case THROW -> Grabs.throwCaptive(player);
+            case RELEASE -> Grabs.releaseByHolder(player);
+            case STRUGGLE -> Grabs.struggle(player);
         }
     }
 

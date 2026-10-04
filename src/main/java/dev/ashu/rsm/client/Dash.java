@@ -46,6 +46,7 @@ public final class Dash {
 
     static void tryDash(LocalPlayer player) {
         if (player.isSpectator() || player.isPassenger() || player.isSleeping() || !Bearer.isBearer(player)) return;
+        if (ClientGrabs.isCaptive(player.getId())) return;
         int now = player.tickCount;
         if (!isReady(now)) return;
         startedTick = now;

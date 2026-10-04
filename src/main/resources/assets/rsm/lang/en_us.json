@@ -9,6 +9,12 @@
   "key.rsm.dash": "Dash",
   "key.rsm.toggle_haste": "Toggle Haste",
   "key.rsm.toggle_night_vision": "Toggle Night Vision",
+  "key.rsm.toggle_regeneration": "Toggle Regeneration",
+  "key.rsm.toggle_strength": "Toggle Strength",
+  "key.rsm.grab": "Grab (hold to throw)",
+  "key.rsm.release": "Release",
+  "death.attack.rsm.slammed": "%1$s was slammed into a wall by %2$s",
+  "death.attack.rsm.slammed.item": "%1$s was slammed into a wall by %2$s using %3$s",
   "rsm.hud.speed": "%s b/s",
   "rsm.hud.cruise": "CRUISE",
   "itemGroup.rsm": "Raw superhuman mod"

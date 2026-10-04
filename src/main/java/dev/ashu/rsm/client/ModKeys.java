@@ -20,7 +20,7 @@ import org.lwjgl.glfw.GLFW;
 
 /**
  * Key bindings (all rebindable in Controls): attacks on mouse 4 / mouse 5 / G, Dash on Caps Lock, Passive Effect
- * switches on H / N. Also the client-side cooldown mirror for the HUD.
+ * switches on H / N / J / Y, Grab on R (hold to throw) and Release on the grave key. Also the client-side cooldown mirror for the HUD.
  */
 @EventBusSubscriber(modid = RawSuperhumanMod.MOD_ID, value = Dist.CLIENT)
 public final class ModKeys {
@@ -31,6 +31,10 @@ public final class ModKeys {
     public static final KeyMapping DASH = new KeyMapping("key.rsm.dash", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_CAPS_LOCK, CATEGORY);
     public static final KeyMapping TOGGLE_HASTE = new KeyMapping("key.rsm.toggle_haste", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_H, CATEGORY);
     public static final KeyMapping TOGGLE_NIGHT_VISION = new KeyMapping("key.rsm.toggle_night_vision", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_N, CATEGORY);
+    public static final KeyMapping TOGGLE_REGENERATION = new KeyMapping("key.rsm.toggle_regeneration", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_J, CATEGORY);
+    public static final KeyMapping TOGGLE_STRENGTH = new KeyMapping("key.rsm.toggle_strength", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_Y, CATEGORY);
+    public static final KeyMapping GRAB = new KeyMapping("key.rsm.grab", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_R, CATEGORY);
+    public static final KeyMapping RELEASE = new KeyMapping("key.rsm.release", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_GRAVE_ACCENT, CATEGORY);
 
     /** Optimistic copy of the server cooldowns, driven by our own key presses. */
     public static final AttackCooldowns COOLDOWNS = new AttackCooldowns();
@@ -43,6 +47,10 @@ public final class ModKeys {
         event.register(DASH);
         event.register(TOGGLE_HASTE);
         event.register(TOGGLE_NIGHT_VISION);
+        event.register(TOGGLE_REGENERATION);
+        event.register(TOGGLE_STRENGTH);
+        event.register(GRAB);
+        event.register(RELEASE);
     }
 
     public static KeyMapping keyFor(AttackKind kind) {
@@ -53,14 +61,24 @@ public final class ModKeys {
         };
     }
 
+    public static KeyMapping keyFor(PassiveEffect effect) {
+        return switch (effect) {
+            case HASTE -> TOGGLE_HASTE;
+            case NIGHT_VISION -> TOGGLE_NIGHT_VISION;
+            case REGENERATION -> TOGGLE_REGENERATION;
+            case STRENGTH -> TOGGLE_STRENGTH;
+        };
+    }
+
     /** Called every client tick after the game processed input. */
     static void tick(LocalPlayer player) {
         while (SLASH.consumeClick()) tryAttack(player, AttackKind.SLASH);
         while (STRIKE.consumeClick()) tryAttack(player, AttackKind.STRIKE);
         while (CLAP.consumeClick()) tryAttack(player, AttackKind.CLAP);
         while (DASH.consumeClick()) Dash.tryDash(player);
-        while (TOGGLE_HASTE.consumeClick()) togglePassive(player, PassiveEffect.HASTE);
-        while (TOGGLE_NIGHT_VISION.consumeClick()) togglePassive(player, PassiveEffect.NIGHT_VISION);
+        for (PassiveEffect effect : PassiveEffect.values()) {
+            while (keyFor(effect).consumeClick()) togglePassive(player, effect);
+        }
     }
 
     private static void togglePassive(LocalPlayer player, PassiveEffect effect) {
@@ -71,9 +89,14 @@ public final class ModKeys {
 
     private static void tryAttack(LocalPlayer player, AttackKind kind) {
         if (player.isSpectator() || !Bearer.isBearer(player)) return;
+        if (kind == AttackKind.CLAP && ClientGrabs.isHolding(player.getId())) return;
         if (!COOLDOWNS.isReady(kind, player.tickCount)) return;
         COOLDOWNS.trigger(kind, player.tickCount, kind.cooldownTicks());
-        player.swing(InteractionHand.MAIN_HAND);
+        if (kind == AttackKind.CLAP) {
+            ClapAnimation.start(player.getId());
+        } else {
+            player.swing(InteractionHand.MAIN_HAND);
+        }
         PacketDistributor.sendToServer(new AttackPayload(kind));
     }
 

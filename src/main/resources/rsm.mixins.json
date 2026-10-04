@@ -7,7 +7,10 @@
     "EntityAccessor",
     "PlayerMixin"
   ],
-  "client": [],
+  "client": [
+    "client.HumanoidModelMixin",
+    "client.PlayerRendererMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }
